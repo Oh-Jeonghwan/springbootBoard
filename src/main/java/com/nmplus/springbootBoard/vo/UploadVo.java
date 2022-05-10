@@ -29,6 +29,9 @@ public class UploadVo {
 		if(upfile.size()<1) { //upfile 객체가 있지만 size가 영일 경우
 			return false;
 		}
+		if(upfile.get(0).getSize()==0) {
+			return false;
+		}
 		return true;
 	}
 }

@@ -1,25 +1,26 @@
 package com.nmplus.springbootBoard.controller.api;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
 import com.nmplus.springbootBoard.service.AttachmentService;
 import com.nmplus.springbootBoard.service.BoardService;
-import com.nmplus.springbootBoard.vo.Attachment;
 import com.nmplus.springbootBoard.vo.Board;
 import com.nmplus.springbootBoard.vo.UploadVo;
 
@@ -39,7 +40,9 @@ public class BoardApiController {
 	@PostMapping("/insert")
 	public String insert(HttpSession session, @ModelAttribute Board board,
 			@AuthenticationPrincipal PrincipalDetail principal, @ModelAttribute UploadVo uploadVo) {
-		log.debug("몇개?"+uploadVo.getUpfile().size());
+		log.debug("뭐가 넘어오지?"+uploadVo.getUpfile().get(0).getContentType());
+		log.debug("뭐가 넘어오지?"+uploadVo.getUpfile().get(0).getOriginalFilename());
+		log.debug("뭐가 넘어오지?"+uploadVo.getUpfile().get(0).getSize());
 		board.setWriter(principal.getUsername());
 		Board result = boardService.saveBoard(board);
 		
@@ -47,7 +50,9 @@ public class BoardApiController {
 			session.setAttribute("alertMsg", "글 등록에 실패했습니다.");
 			return "redirect:/board/insert";
 		} else {
-			if(!uploadVo.isFileExist()) {
+			if(uploadVo.isFileExist()) {
+				
+				log.debug("들어오면 안되는데?ㄴ??"+uploadVo.getUpfile().size());
 				// 보드에 등록 후 첨부파일 등록
 				attachmentService.insertAtt(uploadVo, result);
 			}
@@ -108,5 +113,11 @@ public class BoardApiController {
 		}
 
 	}
+	
+/*	
+	FileSizeLimitExceededException - max file size의 설정값보다 큰 파일이 들어갈 때
+	SizeLimitExceededException - max request size 의 설정값보다 큰 파일이나 총 파일의 크기가 클 때
 
+	두 예외 다 스프링 프레임 워크에서 MaxUploadSizeExceededException 로 변환
+*/
 }
