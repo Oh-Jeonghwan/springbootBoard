@@ -9,6 +9,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -40,10 +42,11 @@ public class Attachment {
 	@Column(nullable = false) //기존의 파일이름
     private String originFilename;
 
-    @Column(nullable = false) //글 등록 후 파일이름
+    @Column(nullable = false) //서버에 저장되는 파일이름
     private String filename;
-
+    
     @Column(nullable = false) //파일 경로
+    @ColumnDefault("'\\\\src\\\\main\\\\resources\\\\static\\\\upfile\\\\'")
     private String filePath;
     
     @Column(updatable = false, nullable = false)
@@ -56,8 +59,9 @@ public class Attachment {
 	@Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime modifiedDate;
 	
-	@Column(nullable = true)
-	private Long refBoardNo;
+	@ManyToOne
+	@JoinColumn(name = "boardNo")
+	private Board board;
 	
 	@Column
 	@ColumnDefault("'Y'")

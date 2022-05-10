@@ -1,7 +1,10 @@
 package com.nmplus.springbootBoard.vo;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -18,7 +22,6 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDa
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,7 +43,7 @@ public class Board {
 	@Column
 	private String boardTitle;
 	
-	@Column
+	@Column(columnDefinition = "TEXT")
 	private String boardContent;
 	
 	@Column
@@ -49,6 +52,14 @@ public class Board {
 	@Column
 	@ColumnDefault("0")
 	private int count;
+	
+	@Column
+	@OneToMany(
+			mappedBy = "board"
+		  , cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+		  , orphanRemoval = true
+			)
+	private List<Attachment> attachment = new ArrayList<>();
     
 	@Column(updatable = false, nullable = false)
 	@CreatedDate
@@ -64,9 +75,4 @@ public class Board {
 	@ColumnDefault("'Y'")
 	private String status;
 	
-	@Builder
-	public Board (String boardTitle, String boardContent) {
-		this.boardTitle = boardTitle;
-		this.boardContent = boardContent;
-	}
 }
