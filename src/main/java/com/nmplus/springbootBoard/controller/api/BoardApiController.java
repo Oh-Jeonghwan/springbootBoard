@@ -42,14 +42,15 @@ public class BoardApiController {
 		log.debug("몇개?"+uploadVo.getUpfile().size());
 		board.setWriter(principal.getUsername());
 		Board result = boardService.saveBoard(board);
-
+		
 		if (result == null) {
 			session.setAttribute("alertMsg", "글 등록에 실패했습니다.");
 			return "redirect:/board/insert";
 		} else {
-			// 보드에 등록 후 첨부파일 등록
-			attachmentService.insertAtt(uploadVo, result);
-
+			if(!uploadVo.isFileExist()) {
+				// 보드에 등록 후 첨부파일 등록
+				attachmentService.insertAtt(uploadVo, result);
+			}
 			// 첨부파일 등록 후
 			session.setAttribute("alertMsg", "글이 등록되었습니다.");
 			return "redirect:/board/list";
