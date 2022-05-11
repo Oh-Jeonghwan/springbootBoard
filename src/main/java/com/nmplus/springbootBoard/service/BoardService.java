@@ -42,7 +42,7 @@ public class BoardService {
 	}
 	
 	public Board boardSearch(Long boardNo) {
-		return (Board) boardRepository.findByBoardNoUsingJoin(boardNo);
+		return (Board) boardRepository.findByBoardNo(boardNo);
 	}
 
 	public int zeroToOne(int number) {

@@ -18,7 +18,7 @@ public interface BoardRepository extends JpaRepository<Board,Long>{
 
 	Page<Board> findByWriterContainingAndStatus(String keyword, String status, Pageable pageable);
 
-	Board findByBoardNoUsingJoin(Long boardNo);
+	Board findByBoardNo(Long boardNo);
 
 	
 	
