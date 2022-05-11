@@ -31,8 +31,6 @@ public class PrincipalDetailService implements UserDetailsService{
 					return new UsernameNotFoundException("아이디 또는 비밀번호를 찾을 수 없습니다.");
 				});
 		
-		log.debug("프린시펄은???? "+principal);
-		log.debug("principal " + principal);
 		return new PrincipalDetail(principal); //시큐리티의 세션에 유저 정보가 userDetatils타임으로 저장이 됨
 		
 		//이 과정을 통해 ID: user, PW: 콘솔창에 뜨던 것 외에 db에서 비교해와서 로그인을 가능하게 함

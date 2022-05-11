@@ -4,19 +4,15 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
 import com.nmplus.springbootBoard.service.AttachmentService;
@@ -35,37 +31,38 @@ public class BoardApiController {
 	private BoardService boardService;
 
 	@Autowired
-	private AttachmentService attachmentService;
+	private AttachmentService attachmentService; 
 
 	@PostMapping("/insert")
-	public String insert(HttpSession session, @ModelAttribute Board board,
-			@AuthenticationPrincipal PrincipalDetail principal, @ModelAttribute UploadVo uploadVo) {
-		log.debug("뭐가 넘어오지?"+uploadVo.getUpfile().get(0).getContentType());
-		log.debug("뭐가 넘어오지?"+uploadVo.getUpfile().get(0).getOriginalFilename());
-		log.debug("뭐가 넘어오지?"+uploadVo.getUpfile().get(0).getSize());
+	public String insert (Model model
+						, @ModelAttribute Board board
+						, @ModelAttribute UploadVo uploadVo
+						, @AuthenticationPrincipal PrincipalDetail principal){
+		
 		board.setWriter(principal.getUsername());
 		Board result = boardService.saveBoard(board);
 		
 		if (result == null) {
-			session.setAttribute("alertMsg", "글 등록에 실패했습니다.");
+			model.addAttribute("message", "글 등록에 실패했습니다.");
 			return "redirect:/board/insert";
 		} else {
 			if(uploadVo.isFileExist()) {
 				
-				log.debug("들어오면 안되는데?ㄴ??"+uploadVo.getUpfile().size());
 				// 보드에 등록 후 첨부파일 등록
 				attachmentService.insertAtt(uploadVo, result);
 			}
 			// 첨부파일 등록 후
-			session.setAttribute("alertMsg", "글이 등록되었습니다.");
+			model.addAttribute("message", "글이 등록되었습니다.");
 			return "redirect:/board/list";
 		}
 	}
 
 	// 나중에 ajax로 post가 아닌 put메소드 사용으로 바꾼다.
 	@PostMapping("/edit/put/{boardNo}")
-	public String boardEdit(HttpSession session, @PathVariable Long boardNo, @RequestParam String boardTitle,
-			@RequestParam String boardContent) {
+	public String boardEdit(HttpSession session
+						  , @PathVariable Long boardNo
+						  , @RequestParam String boardTitle
+						  , @RequestParam String boardContent) {
 
 		Board boardSelect = boardService.boardSearch(boardNo);
 
@@ -91,7 +88,8 @@ public class BoardApiController {
 
 	// ajax통신으로 get에서 put로 바꿔보자
 	@GetMapping("/delete/{boardNo}")
-	public String boardDelete(HttpSession session, @PathVariable Long boardNo) {
+	public String boardDelete(HttpSession session
+							, @PathVariable Long boardNo) {
 
 		Board boardSelect = boardService.boardSearch(boardNo);
 
@@ -107,13 +105,13 @@ public class BoardApiController {
 			session.setAttribute("alertMsg", "글 삭제가 안 되었습니다.");
 			return "redirect:/board/content/" + boardNo;
 		} else {
-			log.debug("변경될까? 안 될까?: " + boardDelete.toString());
 			session.setAttribute("alertMsg", "글 삭제가 되었습니다.");
 			return "redirect:/board/list";
 		}
 
 	}
 	
+
 /*	
 	FileSizeLimitExceededException - max file size의 설정값보다 큰 파일이 들어갈 때
 	SizeLimitExceededException - max request size 의 설정값보다 큰 파일이나 총 파일의 크기가 클 때

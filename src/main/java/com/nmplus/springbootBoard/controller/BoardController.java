@@ -1,5 +1,7 @@
 package com.nmplus.springbootBoard.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
+import com.nmplus.springbootBoard.service.AttachmentService;
 import com.nmplus.springbootBoard.service.BoardService;
+import com.nmplus.springbootBoard.vo.Attachment;
 import com.nmplus.springbootBoard.vo.Board;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +32,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private AttachmentService attachmentService;
 	
 	//리스트까지는 로그인 인증 안 해도 볼 수 있도록 허용
 	@GetMapping("/list")
@@ -52,14 +59,6 @@ public class BoardController {
 		endPage = boardService.zeroToOne(endPage);
 		totalPages = boardService.zeroToOne(totalPages);
 		
-		
-		
-		log.debug("현재 페이지는? "+page);
-		log.debug("시작 페이지는? "+startPage);
-		log.debug("끝 페이지는? "+endPage);
-		log.debug("전체 페이지 수는?" + totalPages);
-		
-		
 		model.addAttribute("page", page);
 		model.addAttribute("startPage",startPage);
 		model.addAttribute("endPage", endPage);
@@ -76,10 +75,13 @@ public class BoardController {
 	}
 	
 	@GetMapping("/content/{boardNo}")
-	public String contentSearch(@PathVariable Long boardNo
-							  , Model model) {
+	public String contentSearch(Model model
+							  , @PathVariable Long boardNo) {
+		
 		Board boardContent = boardService.boardSearch(boardNo);
+		
 		model.addAttribute("boardContent", boardContent);
+		
 		return "board/content";
 	}
 	

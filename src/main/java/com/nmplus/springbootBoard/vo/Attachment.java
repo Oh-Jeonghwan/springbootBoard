@@ -45,8 +45,8 @@ public class Attachment {
     @Column(nullable = false) //서버에 저장되는 파일이름
     private String filename;
     
-    @Column(nullable = false) //파일 경로
-    @ColumnDefault("'\\\\src\\\\main\\\\resources\\\\static\\\\upfile\\\\'")
+    @Column //파일 경로
+    @ColumnDefault("'C:\\\\Users\\\\nmplus\\\\eclipse-workspace\\\\springbootBoard\\\\src\\\\main\\\\resources\\\\static\\\\upfile'")
     private String filePath;
     
     @Column(updatable = false, nullable = false)

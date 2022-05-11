@@ -42,7 +42,7 @@ public class BoardService {
 	}
 	
 	public Board boardSearch(Long boardNo) {
-		return boardRepository.findById(boardNo).orElse(null);//boardNo가 없을 떄 null을 보내준다.
+		return (Board) boardRepository.findByBoardNoUsingJoin(boardNo);
 	}
 
 	public int zeroToOne(int number) {

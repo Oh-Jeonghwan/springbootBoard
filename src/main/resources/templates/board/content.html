@@ -53,6 +53,10 @@
             
             <div class="boardContent" th:text="${boardContent.boardContent}">내용</div>
         </div>
+        <div th:each="attachment:${attachment}">
+        	<span th:text="attachment.originFilename"></span>
+        	<button class="btn btn-success download" type="button">다운로드</button>
+        </div>
         <div class="button btn-group">
 	    	<button class="btn" type="button" th:onclick="'location.href = \'' + @{/board/list} + '\''">목록가기</button>
 	        <!-- 서브밋이 아닌 기본 버튼을 통한 유알엘 이동은 get 방식으로 넘어감 서블릿에서 get매핑으로 -->
@@ -77,6 +81,7 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
+	<script src="/js/board/board.js"></script>
 
 </body>
 

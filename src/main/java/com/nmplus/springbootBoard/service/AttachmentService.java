@@ -2,6 +2,7 @@ package com.nmplus.springbootBoard.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class AttachmentService {
 					attachment.setOriginFilename(uploadVo.getUpfile().get(i).getOriginalFilename());
 					attachment.setFilename(changeName);
 					attachment.setBoard(result);
-					attachment.setFilePath("\\\\src\\\\main\\\\resources\\\\static\\\\upfile");
+					//attachment.setFilePath("C:\\\\Users\\\\nmplus\\\\eclipse-workspace\\\\springbootBoard\\\\src\\\\main\\\\resources\\\\static\\\\upfile");
 					attachmentRepository.save(attachment);
 
 				} catch (IllegalStateException | IOException e) {
@@ -51,5 +52,4 @@ public class AttachmentService {
 		}
 
 	}
-
 }

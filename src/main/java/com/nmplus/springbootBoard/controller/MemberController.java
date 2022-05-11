@@ -19,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class MemberController {
-	@Autowired
-	private MemberService memberService;
 	
 	@GetMapping("/auth/joinForm")
 	public String join(){
