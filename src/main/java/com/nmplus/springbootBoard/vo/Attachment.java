@@ -46,7 +46,7 @@ public class Attachment {
     private String filename;
     
     @Column //파일 경로
-    @ColumnDefault("'C:\\\\Users\\\\nmplus\\\\eclipse-workspace\\\\springbootBoard\\\\src\\\\main\\\\resources\\\\static\\\\upfile'")
+    @ColumnDefault("'\\\\src\\\\main\\\\resources\\\\static\\\\upfile\\\\'")
     private String filePath;
     
     @Column(updatable = false, nullable = false)

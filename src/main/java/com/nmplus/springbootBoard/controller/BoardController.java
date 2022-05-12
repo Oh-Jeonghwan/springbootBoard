@@ -80,8 +80,6 @@ public class BoardController {
 		
 		Board boardContent = boardService.boardSearch(boardNo);
 		
-		log.debug("제발 오버스택 플로우,,,"+boardContent.getAttachment().get(0).getOriginFilename());
-		
 		model.addAttribute("boardContent", boardContent);
 		
 		return "board/content";

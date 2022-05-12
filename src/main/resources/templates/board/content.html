@@ -53,9 +53,10 @@
             
             <div class="boardContent" th:text="${boardContent.boardContent}">내용</div>
         </div>
-        <div th:each="attachment:${attachment}">
-        	<span th:text="attachment.originFilename"></span>
-        	<button class="btn btn-success download" type="button">다운로드</button>
+        <div th:each="attachment:${boardContent.attachment}">
+        	<span th:text="${attachment.originFilename}"></span>
+        	<a class="btn btn-success download" 
+        		th:onclick="'javascript:board.download('+ ${attachment.fileNo} +');'">다운로드</a>
         </div>
         <div class="button btn-group">
 	    	<button class="btn" type="button" th:onclick="'location.href = \'' + @{/board/list} + '\''">목록가기</button>
@@ -69,9 +70,7 @@
 	<!-- Optional JavaScript; choose one of the two! -->
 
 	<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script>
 		window.jQuery
 				|| document
@@ -82,7 +81,6 @@
 		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 		crossorigin="anonymous"></script>
 	<script src="/js/board/board.js"></script>
-
 </body>
 
 </html>

@@ -1,33 +1,27 @@
 /**
  * 
  */
-let index={
-	init: function(){
-		$("#download").on("clcik", () => {
-			this.download();
-		});
-			
-	},
-	
-	download: function(){
-		
-		let boardNo = {${boardContent.boardNo}};
-		
+//파일 다운로드를 위한 ajax
+let board = {
+	download: function(e){
 		$.ajax({
+			type:"post",
 			url: "/board/api/download",
-			data: {boardNo: boardNo},
-			type: "GET"
-			success:function(){
-				console.log("다운됨");
+			data: {attNo: e},
+			success: function(){
+				console.log("asdf");
 			},
 			error: function(){
-				console.log("ajax통신 실패");
+				console.log("att 다운로드 실패");
 			}
 		});
-		
+	}
+}
+
+let index={
+	init: function(){	
 	}
 	
 }
-
 
 index.init();

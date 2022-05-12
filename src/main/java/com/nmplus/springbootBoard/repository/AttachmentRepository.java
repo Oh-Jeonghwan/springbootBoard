@@ -9,4 +9,6 @@ import com.nmplus.springbootBoard.vo.Board;
 
 public interface AttachmentRepository extends JpaRepository<Attachment,Long> {
 
+	Attachment findByFileNo(Long attNo);
+
 }

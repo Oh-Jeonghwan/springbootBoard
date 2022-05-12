@@ -1,9 +1,14 @@
 package com.nmplus.springbootBoard.controller.api;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
 import com.nmplus.springbootBoard.service.AttachmentService;
@@ -26,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/board/api")
 public class BoardApiController {
-
+	
 	@Autowired
 	private BoardService boardService;
 
@@ -37,7 +44,7 @@ public class BoardApiController {
 	public String insert (Model model
 						, @ModelAttribute Board board
 						, @ModelAttribute UploadVo uploadVo
-						, @AuthenticationPrincipal PrincipalDetail principal){
+						, @AuthenticationPrincipal PrincipalDetail principal)throws MaxUploadSizeExceededException{
 		
 		board.setWriter(principal.getUsername());
 		Board result = boardService.saveBoard(board);
@@ -111,6 +118,13 @@ public class BoardApiController {
 
 	}
 	
+	@ResponseBody
+	@PostMapping("/download")
+	public ResponseEntity<Resource> download(HttpServletResponse response
+					   					   , @RequestParam Long attNo) throws IOException {
+		
+		return attachmentService.download(attNo);
+	}
 
 /*	
 	FileSizeLimitExceededException - max file size의 설정값보다 큰 파일이 들어갈 때

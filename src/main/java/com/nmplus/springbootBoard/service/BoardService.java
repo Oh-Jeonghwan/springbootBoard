@@ -1,5 +1,6 @@
 package com.nmplus.springbootBoard.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +43,8 @@ public class BoardService {
 	}
 	
 	public Board boardSearch(Long boardNo) {
-		return (Board) boardRepository.findByBoardNo(boardNo);
+		Board board = (Board) boardRepository.findByBoardNo(boardNo);
+		return board;
 	}
 
 	public int zeroToOne(int number) {
