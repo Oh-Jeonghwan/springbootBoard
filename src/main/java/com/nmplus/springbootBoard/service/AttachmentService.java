@@ -1,10 +1,17 @@
 package com.nmplus.springbootBoard.service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -65,30 +72,42 @@ public class AttachmentService {
 
 	}
 
-	public ResponseEntity<Resource> download(Long attNo) throws IOException{
+	public void download(HttpServletResponse response
+						, Long attNo) throws IOException{
 		
 		Attachment attachment = attachmentRepository.findByFileNo(attNo);
-		//String path = System.getProperty("user.dir") + attachment.getFilePath() + attachment.getFilename();
-		Path path = Paths.get(File.separatorChar + "file", File.separatorChar + attachment.getFilename());
+		String path = System.getProperty("user.dir") + attachment.getFilePath() + attachment.getFilename();
 		
-		try{
-				//파일 경로를 인풋스트림 리소스의 형태에 맞게 변환 시켜 Resorce 인터페이스에 채워준다.
-				Resource resource = new InputStreamResource(getClass().getResourceAsStream(path.toString()));
-				
-				//war에서는 되는데 jar에서는 안 된다.(파일을 못 찾는다. 왜?)
-				//File file = resource.getFile();
-				
-				//리스폰스 엔티티의 헤더 영역을 채워서 파일 경로로 가는 것이 아닌 다운이 되도록 해서 반환.
-				return ResponseEntity.ok()
-						.contentType(MediaType.APPLICATION_OCTET_STREAM)
-						.cacheControl(CacheControl.noCache())
-						.header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename="+attachment.getFilename()+"")
-						.body(resource);
-
-		} catch(Exception e) {
+			//getFile() 메소드는 war파일에서는 되는데 jar파일에서는 안 됨
+			//war는 run시에 실제 리소스 파일인 file:// 프로토콜을 쓰지만 jar에서는 http://사용 
+			//Resource resource = resourceLoader.getResource(path);	
+			File file = new File(path);	//파일이 없는 경우 fileNotFoundException error가 난다.
+			
+			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(file.getName(), "UTF-8")+"\";");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader("Content-Type", "application/octet-stream");
+            response.setHeader("Content-Length", "" + file.length());
+            response.setHeader("Pragma", "no-cache;");
+            response.setHeader("Expires", "-1;");
+			
+//			 ResponseEntity.ok()
+//					.header(HttpHeaders.CONTENT_DISPOSITION,file.getName())	//다운 받아지는 파일 명 설정
+//					.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()))	//파일 사이즈 설정
+//					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM.toString())	//바이너리 데이터로 받아오기 설정
+//					.body(resource);	//파일 넘기기
+			
+		try (FileInputStream fis = new FileInputStream(path);
+			 OutputStream out = response.getOutputStream();){ 
+			 
+			int readCount = 0;
+			byte[] buffer = new byte[1024];
+			while((readCount = fis.read(buffer))!= -1) {
+				out.write(buffer,0,readCount);
+			}
+		} catch (Exception e ) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
+			ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} 
 	}
 
 	
