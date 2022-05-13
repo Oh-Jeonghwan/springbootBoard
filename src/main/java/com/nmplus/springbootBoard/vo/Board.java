@@ -66,8 +66,7 @@ public class Board {
 	
 	@Column
 	@OneToMany(mappedBy = "board"
-			  , cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
-			  , orphanRemoval = true)
+			  , cascade = {CascadeType.ALL})
 	private List<BoardReply> boardReply = new ArrayList<>();
     
 	@Column(updatable = false, nullable = false)

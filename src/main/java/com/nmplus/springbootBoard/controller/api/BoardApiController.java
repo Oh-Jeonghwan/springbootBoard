@@ -135,8 +135,11 @@ public class BoardApiController {
 	public BoardReplyVo replyInsert(@RequestParam Long boardNo
 						  , @RequestParam String replyContent
 						  , @AuthenticationPrincipal PrincipalDetail principal) {
-	
-		return boardReplyService.replyInsert(boardNo, replyContent, principal);
+		
+		
+		BoardReplyVo reply = boardReplyService.replyInsert(boardNo, replyContent, principal);
+		
+		return reply;
 	}
 
 /*	
