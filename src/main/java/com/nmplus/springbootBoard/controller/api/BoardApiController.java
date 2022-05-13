@@ -7,8 +7,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +21,10 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
 import com.nmplus.springbootBoard.service.AttachmentService;
+import com.nmplus.springbootBoard.service.BoardReplyService;
 import com.nmplus.springbootBoard.service.BoardService;
 import com.nmplus.springbootBoard.vo.Board;
+import com.nmplus.springbootBoard.vo.BoardReplyVo;
 import com.nmplus.springbootBoard.vo.UploadVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +39,9 @@ public class BoardApiController {
 
 	@Autowired
 	private AttachmentService attachmentService; 
+	
+	@Autowired
+	private BoardReplyService boardReplyService;
 
 	@PostMapping("/insert")
 	public String insert (Model model
@@ -125,6 +128,15 @@ public class BoardApiController {
 		//ResponseEntity<Resource>
 		
 		attachmentService.download(response, attNo);
+	}
+	
+	@ResponseBody
+	@PostMapping("/replyInsert")
+	public BoardReplyVo replyInsert(@RequestParam Long boardNo
+						  , @RequestParam String replyContent
+						  , @AuthenticationPrincipal PrincipalDetail principal) {
+	
+		return boardReplyService.replyInsert(boardNo, replyContent, principal);
 	}
 
 /*	

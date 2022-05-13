@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -17,12 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.util.UriUtils;
 
 import com.nmplus.springbootBoard.repository.AttachmentRepository;
 import com.nmplus.springbootBoard.vo.Attachment;
@@ -73,7 +79,7 @@ public class AttachmentService {
 	}
 
 	public void download(HttpServletResponse response
-						, Long attNo) throws IOException{
+											, Long attNo) throws IOException{
 		
 		Attachment attachment = attachmentRepository.findByFileNo(attNo);
 		String path = System.getProperty("user.dir") + attachment.getFilePath() + attachment.getFilename();
@@ -81,14 +87,35 @@ public class AttachmentService {
 			//getFile() 메소드는 war파일에서는 되는데 jar파일에서는 안 됨
 			//war는 run시에 실제 리소스 파일인 file:// 프로토콜을 쓰지만 jar에서는 http://사용 
 			//Resource resource = resourceLoader.getResource(path);	
-			File file = new File(path);	//파일이 없는 경우 fileNotFoundException error가 난다.
+			//File file = resource.getFile();
 			
-			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(file.getName(), "UTF-8")+"\";");
-            response.setHeader("Content-Transfer-Encoding", "binary");
-            response.setHeader("Content-Type", "application/octet-stream");
-            response.setHeader("Content-Length", "" + file.length());
-            response.setHeader("Pragma", "no-cache;");
-            response.setHeader("Expires", "-1;");
+		
+			Path path1 = Paths.get(path); //다운로드할 파일의 최종경로
+			
+			if(!path1.toFile().exists()) {
+				throw new RuntimeException("file not found");
+			}
+			
+			response.setHeader("Content-Disposition", "attachment; filename=\"" +  URLEncoder.encode(attachment.getOriginFilename(), "UTF-8") + "\";");
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Type", "application/download; utf-8");
+			response.setHeader("Pragma", "no-cache;");
+			response.setHeader("Expires", "-1;");
+			
+			FileInputStream fis = null;
+			
+			fis = new FileInputStream(path1.toFile());
+			FileCopyUtils.copy(fis, response.getOutputStream());
+			response.getOutputStream().flush();
+			fis.close();
+			//URLEncoder.encode(attachment.getOriginFilename()
+			
+//			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(file.getName(), "UTF-8")+"\";");
+//            response.setHeader("Content-Transfer-Encoding", "binary");
+//            response.setHeader("Content-Type", "application/octet-stream");
+//            response.setHeader("Content-Length", "" + file.length());
+//            response.setHeader("Pragma", "no-cache;");
+//            response.setHeader("Expires", "-1;");
 			
 //			 ResponseEntity.ok()
 //					.header(HttpHeaders.CONTENT_DISPOSITION,file.getName())	//다운 받아지는 파일 명 설정
@@ -96,18 +123,18 @@ public class AttachmentService {
 //					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM.toString())	//바이너리 데이터로 받아오기 설정
 //					.body(resource);	//파일 넘기기
 			
-		try (FileInputStream fis = new FileInputStream(path);
-			 OutputStream out = response.getOutputStream();){ 
-			 
-			int readCount = 0;
-			byte[] buffer = new byte[1024];
-			while((readCount = fis.read(buffer))!= -1) {
-				out.write(buffer,0,readCount);
-			}
-		} catch (Exception e ) {
-			e.printStackTrace();
-			ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		} 
+//		try (FileInputStream fis = new FileInputStream(path);
+//			 OutputStream out = response.getOutputStream();){ 
+//			 
+//			int readCount = 0;
+//			byte[] buffer = new byte[1024];
+//			while((readCount = fis.read(buffer))!= -1) {
+//				out.write(buffer,0,readCount);
+//			}
+//		} catch (Exception e ) {
+//			e.printStackTrace();
+//			ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//		} 
 	}
 
 	
