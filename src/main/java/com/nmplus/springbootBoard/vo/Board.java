@@ -62,6 +62,7 @@ public class Board {
 			mappedBy = "board"
 		  , cascade = {CascadeType.PERSIST}
 			)
+	@JsonIgnoreProperties({"board"})
 	private List<Attachment> attachment;
 	
 	@Column
