@@ -1,0 +1,58 @@
+로그인 로그아웃
+=>session 이용
+session 의 타입: HttpSession
+기존에 얻어오는 방법: request.getSession()
+Spring 에서는 그냥 매개변수로 HttpSessiono session 넘겨반으면 됨
+
+<로그인 기능 Flow>
+회원서비스 공용주소 /member
+1. /member/login.do로 get 방식으로 요청 시 로그인 폼이 보여져야 함
+=> 로그인 입력 페이지로 포워딩
+2. 사용자는 본인의 로그인 정보 입력
+=> submit 버튼 클릭
+3. /member/login.do로 post 방식으로 입력한 값들이 들어가서 처리돼야함
+4. 로그인 처리 결과에 따라서 세션을 담고 ,,알람메세지 담고,,
+=> 마무리 처리
+
+<로그아웃 원리>
+기존의 로그인된 회원정보는 session에 담김
+=>session을 무효화(inavalidate, sessionremove)
+
+
++모듈화 작업=> ControllerXXX
+View - Controller - Service - Dao - DB = MVC 패턴 
+
+*Spring 특(안 해도 돌하는 가겠지만 그렇게 해)
+Service 단 만들 때 인터페이스로 한번 만들고, 그 다은에 구현체(클래스)를 만들어야 함
+Dao 단 만들 때 인터페이스로 한번 만들고, 그 다은에 구현체(클래스)를 만들어야 함
+=> 추상화라는 특징때문에(호환성과 확장성을 높이려고)
+
+추상메소드: 껍데기만 있고 내용물이 없는 메소드
+추상클래스: 메소드 중에 하나라도 추상메소드가 있다면 그거는 추상클래스(abstract 키워드)
+인터페이스: 모든 필드가 상수필드고, 모든 메소드가 추상메소드인 좀 특이한 추상클래스
+=> 틀만 만들어 두고 상속받아서 메소드를 구현(재정의) 해서 쓰는 케이스
+=> 추상메소드를 쓰려면 반드시 오버라이딩을 해야하기 때문에 강제성 짙음
+
+클래스
+MemberController
+
++추가
+인터페이스	    클래스
+MemberService =>    MemberSercideImpl
+
+MemberDao     =>    MemberDaoImpl 
+
+*Impl : Implenets의 약자
+인터페잇으 상속받아서 구현할 때
+public class 자식 implements 인터페이스{
+	~~~
+}
+
+예)
+@Service
+public class MemberSerivceImpl implements MemberService{
+\
+}
+@Repository
+public class MemberDaoImpl implements MemberDao{
+}

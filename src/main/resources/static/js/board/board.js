@@ -24,7 +24,7 @@ let board = {
 		//텍스트area 내의 공백(\s) 또는(|) 문자열의 모든 문자(g)
 		//대소문자를 무시(i)하고 공백("")을 제거하여 그 길이가 0이면 
 		if(replyContent.replace(/\s| /gi,"").length == 0){
-			alert("댓글이 비어있습니다.");
+			alert("댓글을 입력해주세요.");
 			$("#replyContent").focus();
 		}
 		else{
@@ -36,10 +36,11 @@ let board = {
 					boardNo: e
 				},
 				success:function(result){
-					content: $("#replyContent").val("");
+					$("#replyContent").val("");
+					alert("댓글이 등록되었습니다.");
 					
 					if(result!=null){
-        				alert(result);
+        				
         			}
 				},
 				error: function(){

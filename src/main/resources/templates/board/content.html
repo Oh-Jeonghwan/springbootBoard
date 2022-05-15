@@ -80,8 +80,12 @@
 						</td>
 					</tr>
 				</thead>
-				<tbody id="replyTbody">
-
+				<tbody id="replyTbody" >
+						<tr th:each="reply:${boardContent.boardReply}">
+							<td style="width:150px" th:text="${reply.replyWriter}"></td>
+							<td style='width:500px' th:text="${reply.replyContent}"></td>
+							<td style='width:200px' th:text="${reply.enrollDate}"></td>
+						</tr>
 				</tbody>
 			</table>
 		</div>

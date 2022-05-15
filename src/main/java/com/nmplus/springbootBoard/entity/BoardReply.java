@@ -20,6 +20,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDa
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nmplus.springbootBoard.vo.Board;
 
@@ -51,6 +52,7 @@ public class BoardReply {
     
     @ManyToOne
 	@JoinColumn(name = "boardNo")
+    @JsonIgnoreProperties({"board"})
 	private Board board;
     
     @Column(updatable = false, nullable = false)

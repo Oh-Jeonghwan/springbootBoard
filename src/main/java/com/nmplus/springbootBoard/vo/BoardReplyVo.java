@@ -1,6 +1,8 @@
 package com.nmplus.springbootBoard.vo;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityListeners;
 
@@ -8,12 +10,16 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.nmplus.springbootBoard.entity.BoardReply;
+import com.nmplus.springbootBoard.service.BoardReplyService;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Setter
 @AllArgsConstructor
@@ -36,6 +42,20 @@ public class BoardReplyVo {
 	
 	private String status;
 	
+	@Builder
+	public BoardReplyVo(String replyContent
+					, Board board
+					, String replyWriter
+					, Long replyNo
+					, LocalDateTime enrollDate){
+		this.replyContent = replyContent;
+		this.board = board;
+		this.replyWriter = replyWriter;
+		this.replyNo = replyNo;
+		this.enrollDate = enrollDate;
+		
+	}
+	
 	public BoardReply toEntity() {
 		return BoardReply.builder()
 				.board(board)
@@ -44,5 +64,6 @@ public class BoardReplyVo {
 				.build();
 		
 	}
+	
 
 }

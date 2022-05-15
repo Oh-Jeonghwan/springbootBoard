@@ -1,6 +1,7 @@
 package com.nmplus.springbootBoard.controller.api;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -136,12 +137,11 @@ public class BoardApiController {
 						  , @RequestParam String replyContent
 						  , @AuthenticationPrincipal PrincipalDetail principal) {
 		
-		
 		BoardReplyVo reply = boardReplyService.replyInsert(boardNo, replyContent, principal);
 		
 		return reply;
 	}
-
+	
 /*	
 	FileSizeLimitExceededException - max file size의 설정값보다 큰 파일이 들어갈 때
 	SizeLimitExceededException - max request size 의 설정값보다 큰 파일이나 총 파일의 크기가 클 때

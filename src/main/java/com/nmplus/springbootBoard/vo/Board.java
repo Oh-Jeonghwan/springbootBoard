@@ -22,6 +22,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDa
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nmplus.springbootBoard.entity.BoardReply;
 
 import lombok.AllArgsConstructor;
@@ -59,15 +60,15 @@ public class Board {
 	@Column
 	@OneToMany(
 			mappedBy = "board"
-		  , cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
-		  , orphanRemoval = true
+		  , cascade = {CascadeType.PERSIST}
 			)
-	private List<Attachment> attachment = new ArrayList<>();
+	private List<Attachment> attachment;
 	
 	@Column
 	@OneToMany(mappedBy = "board"
 			  , cascade = {CascadeType.ALL})
-	private List<BoardReply> boardReply = new ArrayList<>();
+	@JsonIgnoreProperties({"board"})
+	private List<BoardReply> boardReply;
     
 	@Column(updatable = false, nullable = false)
 	@CreatedDate
