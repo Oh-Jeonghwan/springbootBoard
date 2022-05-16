@@ -2,35 +2,17 @@ package com.nmplus.springbootBoard.service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.util.UriUtils;
 
 import com.nmplus.springbootBoard.repository.AttachmentRepository;
 import com.nmplus.springbootBoard.vo.Attachment;
@@ -80,33 +62,37 @@ public class AttachmentService {
 
 	}
 
-	public void download(HttpServletResponse response
-											, Long attNo) throws IOException{
+	public ResponseEntity<Resource> download(Long attNo) throws Exception{
+		
+		//getFile() 메소드는 war파일에서는 되는데 jar파일에서는 안 됨
+		//war는 run시에 실제 리소스 파일인 file:// 프로토콜을 쓰지만 jar에서는 http://사용 
+		//Resource resource = resourceLoader.getResource(path);	
+		//File file = resource.getFile();
 		
 		Attachment attachment = attachmentRepository.findByFileNo(attNo);
-		String path = System.getProperty("user.dir") + attachment.getFilePath() + attachment.getFilename();
+		String path = System.getProperty("user.dir") + attachment.getFilePath()+attachment.getFilename();
 		
-		if(ObjectUtils.isEmpty(attachment)==false) {
-			String fileName = attachment.getOriginFilename();
-			
-			byte[] files = FileUtils.readFileToByteArray(new File(path));
-			
-			response.setContentType("application/octet-stream");
-			response.setContentLength(files.length);
-			response.setHeader("Content-Disposition","attachment; fileName=\""+URLEncoder.encode(fileName
-								, java.nio.charset.StandardCharsets.UTF_8.toString()));
-			
-			response.getOutputStream().write(files);
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
-		}
-			//getFile() 메소드는 war파일에서는 되는데 jar파일에서는 안 됨
-			//war는 run시에 실제 리소스 파일인 file:// 프로토콜을 쓰지만 jar에서는 http://사용 
-			//Resource resource = resourceLoader.getResource(path);	
-			//File file = resource.getFile();
-			
+		//경로를 통해 파일화 시켜준다.
+		File file = new File(path);
 		
-			
+		//파일화한 것을 바이트로 변환시켜준다.
+		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+		
+		//http 형식의 요청 또는 응답을 처리하기 위한 header 설정 (키 밸류 값의 map 형식)
+		HttpHeaders headers = new HttpHeaders();
+		
+		headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName())); 
+		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+		headers.add("Pargma", "no-cache");
+		headers.add("Expires", "0");
+		
+		//httpentity를 상속하고, httpstatus를 포함하고 있는 @Controller와 restTepmplate에 사용된다.
+		ResponseEntity<Resource> responseEntity = 
+			ResponseEntity.ok().headers(headers)
+			.contentLength(file.length())
+			.contentType(MediaType.parseMediaType("application/octet-stream")).body(resource);
+		
+			return responseEntity;
 			//URLEncoder.encode(attachment.getOriginFilename()
 			
 //			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(file.getName(), "UTF-8")+"\";");

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -125,10 +127,10 @@ public class BoardApiController {
 	
 	@ResponseBody
 	@PostMapping("/download")
-	public void download(HttpServletResponse response
-					   	, @RequestParam Long attNo) throws IOException {
+	public ResponseEntity<Resource> download(HttpServletResponse response
+					   	, @RequestParam Long attNo) throws Exception {
 		//ResponseEntity<Resource>
-		attachmentService.download(response, attNo);
+		return attachmentService.download(attNo);
 	}
 	
 	@ResponseBody
