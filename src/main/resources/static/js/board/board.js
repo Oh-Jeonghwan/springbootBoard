@@ -19,10 +19,3 @@ let board = {
 	
 }
 
-let index={
-	init: function(){	
-	}
-	
-}
-
-index.init();

@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -28,6 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.util.UriUtils;
 
 import com.nmplus.springbootBoard.repository.AttachmentRepository;
@@ -84,30 +86,27 @@ public class AttachmentService {
 		Attachment attachment = attachmentRepository.findByFileNo(attNo);
 		String path = System.getProperty("user.dir") + attachment.getFilePath() + attachment.getFilename();
 		
+		if(ObjectUtils.isEmpty(attachment)==false) {
+			String fileName = attachment.getOriginFilename();
+			
+			byte[] files = FileUtils.readFileToByteArray(new File(path));
+			
+			response.setContentType("application/octet-stream");
+			response.setContentLength(files.length);
+			response.setHeader("Content-Disposition","attachment; fileName=\""+URLEncoder.encode(fileName
+								, java.nio.charset.StandardCharsets.UTF_8.toString()));
+			
+			response.getOutputStream().write(files);
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		}
 			//getFile() 메소드는 war파일에서는 되는데 jar파일에서는 안 됨
 			//war는 run시에 실제 리소스 파일인 file:// 프로토콜을 쓰지만 jar에서는 http://사용 
 			//Resource resource = resourceLoader.getResource(path);	
 			//File file = resource.getFile();
 			
 		
-			Path path1 = Paths.get(path); //다운로드할 파일의 최종경로
 			
-			if(!path1.toFile().exists()) {
-				throw new RuntimeException("file not found");
-			}
-			
-			response.setHeader("Content-Disposition", "attachment; filename=\"" +  URLEncoder.encode(attachment.getOriginFilename(), "UTF-8") + "\";");
-			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Type", "application/download; utf-8");
-			response.setHeader("Pragma", "no-cache;");
-			response.setHeader("Expires", "-1;");
-			
-			FileInputStream fis = null;
-			
-			fis = new FileInputStream(path1.toFile());
-			FileCopyUtils.copy(fis, response.getOutputStream());
-			response.getOutputStream().flush();
-			fis.close();
 			//URLEncoder.encode(attachment.getOriginFilename()
 			
 //			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(file.getName(), "UTF-8")+"\";");
