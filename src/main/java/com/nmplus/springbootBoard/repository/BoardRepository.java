@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.nmplus.springbootBoard.entity.BoardReply;
 import com.nmplus.springbootBoard.vo.Board;
 
 @Repository
@@ -19,6 +20,7 @@ public interface BoardRepository extends JpaRepository<Board,Long>{
 	Page<Board> findByWriterContainingAndStatus(String keyword, String status, Pageable pageable);
 
 	Board findByBoardNo(Long boardNo);
+
 
 	
 	

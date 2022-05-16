@@ -49,5 +49,48 @@ public class BoardReplyService {
 		return reply1;
 	}
 
+	public List<BoardReplyVo> replyList(Long boardNo) {
+		
+		Board board = boardRepository.findByBoardNo(boardNo);
+		
+		String status = "Y";
+		
+		List<BoardReply> list = boardReplyRepository.findByBoardAndStatus(board,status);
+		
+		List<BoardReplyVo> voList = new ArrayList<>();
+		
+		for(int i=0; i<list.size(); i++) {
+			BoardReplyVo replyVo = new BoardReplyVo();
+			
+			voList.add(replyVo);
+			
+			voList.get(i).setReplyNo(list.get(i).getReplyNo());
+			voList.get(i).setReplyWriter(list.get(i).getReplyWriter());
+			voList.get(i).setReplyContent(list.get(i).getReplyContent());
+			voList.get(i).setEnrollDate(list.get(i).getEnrollDate());
+		}
+		
+		return voList;
+	}
+
+	public int replyDelete(Long replyNo) {
+		BoardReply delete = boardReplyRepository.findByReplyNo(replyNo);
+		
+		BoardReplyVo deleteVo = new BoardReplyVo();
+		
+		BeanUtils.copyProperties(delete, deleteVo);
+		
+		deleteVo.setStatus("N");
+		
+		BoardReply result = boardReplyRepository.save(deleteVo.toEntity());
+		
+		if(result!=null) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+
 
 }

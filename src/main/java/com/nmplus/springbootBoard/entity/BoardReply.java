@@ -72,10 +72,14 @@ public class BoardReply {
 	@Builder
 	public BoardReply(String replyContent
 					, Board board
-					, String replyWriter){
+					, String replyWriter
+					, String status
+					, Long replyNo){
 		this.replyContent = replyContent;
 		this.board = board;
 		this.replyWriter = replyWriter;
+		this.status = status;
+		this.replyNo = replyNo;
 		
 	}
 	

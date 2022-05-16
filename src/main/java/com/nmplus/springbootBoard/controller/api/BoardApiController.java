@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -140,6 +141,20 @@ public class BoardApiController {
 		BoardReplyVo reply = boardReplyService.replyInsert(boardNo, replyContent, principal);
 		
 		return reply;
+	}
+	
+	@ResponseBody
+	@PostMapping("/replyList")
+	public List<BoardReplyVo> replyList(@RequestParam Long boardNo){
+		List<BoardReplyVo> replyList = boardReplyService.replyList(boardNo);
+		return replyList;
+	}
+	
+	@ResponseBody
+	@PutMapping("/replyDelete")
+	public int replyDelete(@RequestParam Long replyNo) {
+		int result = boardReplyService.replyDelete(replyNo);
+		return result;
 	}
 	
 /*	

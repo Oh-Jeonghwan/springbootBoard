@@ -47,12 +47,14 @@ public class BoardReplyVo {
 					, Board board
 					, String replyWriter
 					, Long replyNo
-					, LocalDateTime enrollDate){
+					, LocalDateTime enrollDate
+					, String status){
 		this.replyContent = replyContent;
 		this.board = board;
 		this.replyWriter = replyWriter;
 		this.replyNo = replyNo;
 		this.enrollDate = enrollDate;
+		this.status= status;
 		
 	}
 	
@@ -61,6 +63,8 @@ public class BoardReplyVo {
 				.board(board)
 				.replyContent(replyContent)
 				.replyWriter(replyWriter)
+				.status(status)
+				.replyNo(replyNo)
 				.build();
 		
 	}
