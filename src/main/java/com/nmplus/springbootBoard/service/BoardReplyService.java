@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,10 @@ public class BoardReplyService {
 	
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	private Sort sortByReplyNo() {
+		return Sort.by(Sort.Direction.DESC,"replyNo");
+	}
 	
 	public BoardReplyVo replyInsert(Long boardNo
 						  , String replyContent
@@ -55,7 +60,9 @@ public class BoardReplyService {
 		
 		String status = "Y";
 		
-		List<BoardReply> list = boardReplyRepository.findByBoardAndStatus(board,status);
+		Sort sort = sortByReplyNo();
+		
+		List<BoardReply> list = boardReplyRepository.findByBoardAndStatus(board, status, sort);
 		
 		List<BoardReplyVo> voList = new ArrayList<>();
 		

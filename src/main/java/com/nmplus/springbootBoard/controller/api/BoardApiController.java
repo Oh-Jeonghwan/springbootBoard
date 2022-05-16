@@ -128,7 +128,6 @@ public class BoardApiController {
 	public void download(HttpServletResponse response
 					   	, @RequestParam Long attNo) throws IOException {
 		//ResponseEntity<Resource>
-		log.debug("asdf: "+attNo);
 		attachmentService.download(response, attNo);
 	}
 	
