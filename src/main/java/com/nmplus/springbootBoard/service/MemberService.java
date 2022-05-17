@@ -1,8 +1,11 @@
 package com.nmplus.springbootBoard.service;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.nmplus.springbootBoard.repository.MemberRepository;
 import com.nmplus.springbootBoard.vo.Member;
@@ -56,6 +59,33 @@ public class MemberService {
 		}
 		else {
 			result = 1;
+		}
+		return result;
+	}
+
+	public Member selectMember(String username) {
+		return memberRepository.findByMemberId(username);
+	}
+
+	public int memberEdit(Principal principal, Member member) {
+		Member searchMember = memberRepository.findByMemberId(principal.getName());
+		
+		String rawPassword = member.getMemberPwd();
+		
+		String encPassowrd = encoder.encode(rawPassword);
+		searchMember.setMemberPwd(encPassowrd);
+		
+		searchMember.setEmail(member.getEmail());
+		searchMember.setPhone(member.getPhone());
+		
+		Member memberUpdate = memberRepository.save(searchMember);
+		
+		int result = 0;
+		if(memberUpdate != null) {
+			result = 1;
+		}
+		else {
+			result = 0;
 		}
 		return result;
 	}

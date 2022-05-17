@@ -1,7 +1,10 @@
 package com.nmplus.springbootBoard.controller.api;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,5 +38,13 @@ public class MemberApiController {
 	@ResponseBody
 	public int emailCheck(@RequestParam String email) {
 		return memberService.emailCheck(email);
+	}
+	
+	@PutMapping("/user/memberEdit")
+	@ResponseBody
+	public int memberEdit (@RequestBody Member member
+							, Principal principal) {
+		int result = memberService.memberEdit(principal, member);
+		return result;
 	}
 }

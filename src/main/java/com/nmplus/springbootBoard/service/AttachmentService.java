@@ -106,7 +106,7 @@ public class AttachmentService {
 	         * */
 	        
 	        
-	      //들어오는 파일이 어떤 형태인지 알여주는웹페이지 자체이거나 웹페이지의 일부인지, 아니면 attachment로써 다운로드 되거나 로컬에 저장될 용도록 쓰이는 것인지를 알려주는 헤더입니다.
+	      //들어오는 파일이 어떤 형태인지 알여주는웹페이지 자체이거나 웹페이지의 일부인지, 아니면 attachment로써 다운로드 되거나 로컬에 저장될 용도록 쓰이는 것인지를 알려주는 헤더
 	        response.setHeader("Content-Disposition","attachment;filename=\"" + downName+"\"");
 	        
 	        response.setContentType("application/octet-stream");
