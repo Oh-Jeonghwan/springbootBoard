@@ -3,6 +3,7 @@ package com.nmplus.springbootBoard.controller.api;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -127,10 +128,9 @@ public class BoardApiController {
 	
 	@ResponseBody
 	@PostMapping("/download")
-	public ResponseEntity<Resource> download(HttpServletResponse response
-					   	, @RequestParam Long attNo) throws Exception {
+	public void download(HttpServletResponse response, HttpServletRequest request, @RequestParam Long attNo) throws Exception {
 		//ResponseEntity<Resource>
-		return attachmentService.download(attNo);
+		attachmentService.download(response, request, attNo);
 	}
 	
 	@ResponseBody
