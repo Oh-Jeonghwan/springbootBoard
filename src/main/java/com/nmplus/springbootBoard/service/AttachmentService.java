@@ -215,5 +215,11 @@ public class AttachmentService {
 		
 	}
 
+	public List<Attachment> attachSearch(Board boardContent) {
+		String status = "Y";
+		List<Attachment> attList = attachmentRepository.findByBoardAndStatus(boardContent, status);
+		return attList;
+	}
+
 	
 }

@@ -30,11 +30,11 @@ let board = {
 			success: function (data) { 
 				if(data>0){
 					alert("글이 수정 되었습니다.");
-					location.href="/board/edit/"+e;
+					location.href="/board/content/"+e;
 				} 
 				else{
 					alert("글을 수정하지 못 했습니다.");
-					location.href="/board/content/"+e;
+					location.href="/board/edit/"+e;
 				}
 			}, 
 			error: function (data) { 

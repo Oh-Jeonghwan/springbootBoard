@@ -51,7 +51,7 @@
 
 			<div class="boardContent" th:text="${boardContent.boardContent}">내용</div>
 		</div>
-		<div th:each="attachment:${boardContent.attachment}">
+		<div th:each="attachment:${attachment}">
 			<span th:text="${attachment.originFilename}"></span>
 			<a class="btn btn-success download"
 				th:onclick="'javascript:board.download('+ ${attachment.fileNo} +');'">다운로드</a>

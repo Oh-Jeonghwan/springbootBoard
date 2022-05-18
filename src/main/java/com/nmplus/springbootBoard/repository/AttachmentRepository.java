@@ -13,4 +13,6 @@ public interface AttachmentRepository extends JpaRepository<Attachment,Long> {
 
 	List<Attachment> findByBoard(Board boardDelete);
 
+	List<Attachment> findByBoardAndStatus(Board boardContent, String status);
+
 }

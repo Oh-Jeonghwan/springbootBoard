@@ -103,6 +103,8 @@ public class BoardApiController {
 				
 				// 보드에 등록 후 첨부파일 등록
 				attachmentService.insertAtt(uploadVo, boardUpdate);
+			}else {
+				attachmentService.attachmentDelete(boardUpdate);
 			}
 			
 			model.addAttribute("message", "글이 등록되었습니다.");

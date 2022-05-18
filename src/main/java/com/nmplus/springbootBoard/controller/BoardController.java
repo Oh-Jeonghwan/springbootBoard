@@ -81,11 +81,13 @@ public class BoardController {
 							  , @PathVariable Long boardNo) {
 
 		Board boardContent = boardService.boardSearch(boardNo);
+		List<Attachment> attachment = attachmentService.attachSearch(boardContent);
 
 		if (boardContent == null || boardContent.getStatus().equals("N")) {
 			model.addAttribute("alertMsg", "게시물이 존재하지 않습니다.");
 			return "redirect:/board/list";
 		} else {
+			model.addAttribute("attachment",attachment);
 			model.addAttribute("boardContent", boardContent);
 			return "board/content";
 		}
