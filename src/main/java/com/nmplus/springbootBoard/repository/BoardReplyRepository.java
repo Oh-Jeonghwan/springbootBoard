@@ -17,4 +17,6 @@ public interface BoardReplyRepository extends JpaRepository<BoardReply, Long>{
 
 	List<BoardReply> findByBoardAndStatus(Board board, String status, Sort sort);
 
+	List<BoardReply> findByBoard(Board boardDelete);
+
 }

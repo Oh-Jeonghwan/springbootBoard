@@ -52,6 +52,10 @@ public class BoardService {
 		return number;
 	}
 
+	public Board findById(Long boardNo) {
+		return boardRepository.findByBoardNo(boardNo);
+	}
+
 	
 	
 }

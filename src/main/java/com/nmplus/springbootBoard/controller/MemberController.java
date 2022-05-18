@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import com.nmplus.springbootBoard.service.MemberService;
 import com.nmplus.springbootBoard.vo.Member;
@@ -22,8 +21,15 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@GetMapping("/auth/joinForm")
-	public String join(){
-		return "member/joinForm";
+	public String join(Principal principal
+					  , Model model){
+		if(principal!=null) {
+			model.addAttribute("alertMsg","이미 회원이십니다.");
+			return "redirect:/";
+		}else {
+			return "member/joinForm";
+		}
+		
 	}
 
 	@GetMapping("/auth/loginForm")

@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -19,9 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.nmplus.springbootBoard.entity.BoardReply;
 import com.nmplus.springbootBoard.repository.AttachmentRepository;
 import com.nmplus.springbootBoard.vo.Attachment;
 import com.nmplus.springbootBoard.vo.Board;
+import com.nmplus.springbootBoard.vo.BoardReplyVo;
 import com.nmplus.springbootBoard.vo.UploadVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -194,6 +198,21 @@ public class AttachmentService {
 //			e.printStackTrace();
 //			ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 //		} 
+	}
+
+	public void attachmentDelete(Board boardDelete) {
+		
+		List<Attachment> delete = attachmentRepository.findByBoard(boardDelete);
+		
+		if(!delete.isEmpty()) {
+			for(int i=0; i<delete.size(); i++) {
+				Attachment deleteVo = new Attachment();
+				BeanUtils.copyProperties(delete.get(i), deleteVo);
+				deleteVo.setStatus("N");
+				Attachment result = attachmentRepository.save(deleteVo);
+			}
+		}
+		
 	}
 
 	

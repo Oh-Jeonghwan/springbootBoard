@@ -66,8 +66,6 @@ public class Attachment {
 	@Column
 	@ColumnDefault("'Y'")
 	private String status;
-	
-	
-    
+
     
 }

@@ -5,31 +5,33 @@ let index = {
 	init: function () {
 		$("#btn-save").on("click", () => { // function()가 아닌 ()=>{}를 쓰는 이유는
 											// this를 바인딩하기 위해
-			this.save();
+			let form = document.querySelector("#joinForm");
+            if (form.checkValidity() == false) {
+                console.log("회원가입 안됨")
+            } else {						
+				this.save();
+			}
 		});
 		
 		$("#memberId").on("change", () => {
 			this.idCheck2();
 		});
 		
-		$("#memberPwd").on("change", ()=>{
-			this.pwdValidate();
-		});
-		
 		$("#pwdCheck").on("change", ()=>{
 			this.pwdCheck1();
-		});
-		
-		$("#phone").on("change", ()=>{
-			this.phCheck();
 		});
 		
 		$("#email").on("change", ()=>{
 			this.emailCheck();
 		});
 		
-		$("#btn-memberEdit").on("click", ()=>{
-			this.memberEdit();
+		$("#btn-memberUpdate").on("click", ()=>{
+			let form = document.querySelector("#updateForm");
+            if (form.checkValidity() == false) {
+                console.log("회원가입 안됨")
+            } else {						
+				this.memberEdit();
+			}
 		});
 	},
 
@@ -107,22 +109,6 @@ let index = {
         }
 	},
 	
-	pwdValidate: function(){
-		 let regExp = /^[a-zA-Z0-9]{8,15}$/;
-         let pwdVali = $("#memberPwd").val();
-
-         if (regExp.test(pwdVali)) {
-             $("#pwdValid").text("유효한 비밀번호입니다.");
-             $("#pwdValid").css('color', 'green');
-             $("#pwdValid").css('font-size', '5px');
-         } else {
-             $("#pwdValid").text("영문, 숫자 포함 8~15자를 입력해주세요.");
-             $("#pwdValid").css('color', 'red');
-             $("#pwdValid").css('font-size', '5px');
-             $("#memberPwd").val("");
-         }
-	},
-	
 	pwdCheck1: function(){
 		let pwdVali = $("#memberPwd").val();
         let pwdCheck = $("#pwdCheck").val();
@@ -138,22 +124,6 @@ let index = {
             $("#pwdCheck").val("");
         }
 		
-	},
-	
-	phCheck: function(){
-        let regExp = /^010[0-9]{3,4}[0-9]{4}$/;
-        let phone = $("#phone").val();
-
-        if (regExp.test(phone)) {
-            $("#phCheck").text("유효한 전화번호입니다.");
-            $("#phCheck").css('color', 'green');
-            $("#phCheck").css('font-size', '5px');
-        } else {
-            $("#phCheck").text("전화번호 형식을 확인해주세요.");
-            $("#phCheck").css('color', 'red');
-            $("#phCheck").css('font-size', '5px');
-            $("#phone").val("");
-        }
 	},
 	
 	emailCheck:function(){
@@ -198,7 +168,6 @@ let index = {
 			memberPwd: $("#memberPwd").val(),
 			phone: $("#phone").val()// 핸드폰
 		};
-
 		// ajax 통신을 이용해서 3개의 데이터를 jason으로 변경하여 insert 요청
 		// ajax호출시 default가 비동기 호출
 		$.ajax({// 회원가입 수행요청
@@ -212,10 +181,12 @@ let index = {
 			console.log(resp);
 			if (resp == 1) {
 				alert("회원수정 완료.");
+				location.href = "/";
 			}
 			else {
 				alert("회원수정 실패.");
 				// 회원가입 안 됐을 경우
+				location.href = "/user/info";
 			}
 
 		}).fail(function (error) {// 실패했을 떄

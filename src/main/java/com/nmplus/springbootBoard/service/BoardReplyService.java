@@ -99,5 +99,18 @@ public class BoardReplyService {
 		}
 	}
 
+	public void replyDelete(Board boardDelete) {
+		List<BoardReply> delete = boardReplyRepository.findByBoard(boardDelete);
+		
+		if(!delete.isEmpty()) {
+			for(int i=0; i<delete.size(); i++) {
+				BoardReplyVo deleteVo = new BoardReplyVo();
+				BeanUtils.copyProperties(delete.get(i), deleteVo);
+				deleteVo.setStatus("N");
+				BoardReply result = boardReplyRepository.save(deleteVo.toEntity());
+			}
+		}
+	}
+
 
 }
