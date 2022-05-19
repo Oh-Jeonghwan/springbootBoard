@@ -44,7 +44,41 @@ let board = {
 			contentType: false, 
 			processData: false 
 		});
-	}
-	
+	},	
 }
 
+let index = {
+		init:function(){
+			$("input[name=upfile]").on("change", () => {
+				this.fileSizeCheck(event);
+			});
+		},
+	
+		fileSizeCheck:function(event){
+			var files = event.target.files;
+			
+			var maxSize = 20 * 1024 * 1024;
+			var perSize = 10 * 1024 * 1024;
+			
+			var filesSize = 0;
+			for(let i=0; i<files.length; i++){
+				filesSize += files[i].size
+			}
+			
+			if(filesSize>maxSize){
+				alert("파일 총 용량이 20MB를 넘을 수 없습니다.");
+				$("input[name=upfile]").val("");
+				return false;
+			}
+			
+			for(let i=0; i<files.length; i++){
+				var fileSize = files[i].size;
+				if(fileSize>perSize){
+					alert("파일 하나의 용량이 10MB를 넘을 수 없습니다.");
+					$("input[name=upfile]").val("");
+					return false;
+				}
+			}
+		}
+	}
+index.init();

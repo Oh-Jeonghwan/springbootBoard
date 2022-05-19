@@ -35,6 +35,40 @@
 			display: inline-block;
 			margin:0px;
 		}
+		
+		body{
+			position: relative;
+		}
+		
+		.outer {
+			position: absolute;
+			top: 100px;
+			left:0%;
+			right:0%;
+		}
+
+		.button {
+			float: right;
+		}
+
+		.writer, .enrollDate, .count{
+			display: inline-block;
+			width:200px;
+			text-anchor: middle;
+			
+		}
+		
+		.boardTitle{
+			display: inline-block;
+		}
+		
+		.boardContent{
+			width: 1100px;
+			height: 500px;
+			border:1px solid black;
+			padding: 20px;
+		}
+		
 	</style>
 </head>
 
@@ -42,10 +76,9 @@
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)">
 		<script th:inline="javascript">
 			/*<![CDATA[*/
-			var message = [[${message}]];
+			var message = [[${alertMsg}]];
 			if (message != null) {
 				alert(message);
-				location.replace=[[${searchUrl}]]
 			}
 			/*]]>*/
 		</script>

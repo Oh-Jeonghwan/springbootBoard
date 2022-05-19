@@ -107,7 +107,7 @@ public class BoardController {
 			return "board/edit";
 		} else {
 			session.setAttribute("alertMsg", "글쓴이가 아닙니다.");
-			return "redirect:/board/list";
+			return "redirect:/board/content/"+boardNo;
 		}
 
 	}

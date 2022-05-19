@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nmplus.springbootBoard.service.MemberService;
 import com.nmplus.springbootBoard.vo.Member;
@@ -48,5 +50,21 @@ public class MemberController {
 		model.addAttribute("member", member);
 		
 		return "member/updateForm";
+	}
+	
+
+	@PostMapping("/auth/findId")
+	public String findId(Model model
+						, @RequestParam String memberName
+						, @RequestParam String email) {
+		Member result = memberService.findId(memberName, email);
+		
+		if(result!=null) {
+			model.addAttribute("result", "조회하신 ID는 "+result.getMemberId()+"입니다.");
+		}else {
+			model.addAttribute("result", "찾으시는 계정이 없습니다.");
+		}
+		
+		return "member/findResult";
 	}
 }

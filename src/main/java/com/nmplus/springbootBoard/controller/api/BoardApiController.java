@@ -73,7 +73,6 @@ public class BoardApiController {
 		}
 	}
 
-	// 나중에 ajax로 post가 아닌 put메소드 사용으로 바꾼다.
 	@PutMapping("/edit/{boardNo}")
 	@ResponseBody
 	public int boardEdit(Model model

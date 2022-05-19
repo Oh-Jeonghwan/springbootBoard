@@ -1,6 +1,8 @@
 package com.nmplus.springbootBoard.entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -19,9 +21,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nmplus.springbootBoard.vo.Board;
 
 import lombok.AllArgsConstructor;
@@ -59,7 +59,9 @@ public class BoardReply {
 	@CreatedDate
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime enrollDate;
-	
+    
+    
+
 	@Column(nullable = false)
 	@LastModifiedDate
 	@Convert(converter = LocalDateTimeConverter.class)
@@ -68,7 +70,7 @@ public class BoardReply {
 	@Column
 	@ColumnDefault("'Y'")
 	private String status;
-	
+
 	@Builder
 	public BoardReply(String replyContent
 					, Board board

@@ -17,7 +17,7 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
     </nav>
 
-    <div class="container">
+    <div class="outer container">
         <h2>게시판</h2>
         <div>
             총 게시글 수: <span th:text="${boards.totalElements}"> </span>

@@ -18,8 +18,8 @@
   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
   </nav>
 
-  <div class="container">
-    <h2>게시판</h2>
+  <div class="outer container">
+    <h2>게시글 수정</h2>
     <form th:action="@{/board/api/edit/{boardNo}(boardNo=${board.boardNo})}" th:object="${board}" id="form" class="form-horiaontal" enctype="multipart/form-data">
 
       <div class="form-group">
@@ -28,7 +28,7 @@
       </div>
       <div class="form-group">
         <label for="boardContent">글 내용</label>
-        <textarea class="form-control" id="boardContent" rows="3" name="*{boardContent}"
+        <textarea class="form-control" id="boardContent" rows="20" name="*{boardContent}"
           th:field="*{boardContent}"></textarea>
       </div>
       <div class="form-group row">

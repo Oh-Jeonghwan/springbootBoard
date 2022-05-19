@@ -90,4 +90,9 @@ public class MemberService {
 		return result;
 	}
 
+	public Member findId(String memberName, String email) {
+		Member FindId= memberRepository.findByMemberNameAndEmail(memberName,email); 
+		return FindId;
+	}
+
 }

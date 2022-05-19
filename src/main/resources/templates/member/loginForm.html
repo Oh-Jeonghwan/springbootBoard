@@ -62,12 +62,55 @@
         <ul>
           <li><a th:href="@{/auth/joinForm}">회원가입</a></li>
           <span>&nbsp;|&nbsp;</span>
-          <li><a>아이디 찾기</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#findId">아이디 찾기</a></li>
           <span>&nbsp;|&nbsp;</span>
-          <li><a>비밀번호 찾기</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#findPwd">비밀번호 찾기</a></li>
         </ul>
       </div>
     </main>
+    <!-- 팝업창 영역 -->
+    <!-- 아이디 찾기 팝업 -->
+    <div class="modal" id="findId">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<p>아이디 찾기</p>
+    			</div>
+    			<div class="modal-body">
+            <form th:action="@{/auth/findId}" method="post">
+              <div class="form-group">
+                <div class="form-floating m-3">
+                  <input type="text" name="memberName" placeholder="이름을 입력해 주세요."><br>
+                </div>
+                <div class="form-floating m-3">
+                  <input type="text" name="email" placeholder="email을 입력해 주세요."><br>
+                </div>
+              </div>
+              <button class="btn btn-success">찾기</button>
+    		  <button type="button" class="btn btn-emergency" data-dismiss="modal">닫기</button>
+            </form>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <!-- 비밀번호 찾기 팝업 -->
+    <div class="modal" id="findPwd">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<p>비밀번호 찾기</p>
+    			</div>
+    			<div class="modal-body">
+    				<input type="text">
+    			</div>
+    			<div class="modal-footer">
+    				<p>헤더</p>
+    				<button type="button" class="btn btn-success" data-dismiss="modal">닫기</button>
+    			</div>
+    		</div>
+    	</div>
+    </div>
   </div><!-- /.container -->
 
   <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->

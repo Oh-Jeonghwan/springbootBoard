@@ -12,56 +12,40 @@
 		integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 	<link rel="stylesheet" href="starter-template.css" th:href="@{/starter-template.css}">
 	<title>게시판</title>
-	<style>
-		.contentTable {
-			border: 1px black solid;
-		}
-
-		.button {
-			float: right;
-		}
-
-		.writer {
-			display: inline-block;
-		}
-
-		.enrollDate {
-			display: inline-block;
-		}
-
-		.count {
-			display: inline-block;
-		}
-	</style>
 </head>
 
 <body th:onload="'javascript:boardReply.replyList('+ ${boardContent.boardNo} +');'">
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
 	</nav>
 
-	<div class="container">
-		<h2>게시판</h2>
+	<div class="outer container">
+		<h2>게시글 상세</h2>
 		<div class="detailView">
+			<span><strong>작성자</strong></span>&nbsp;
+			<div class="writer" th:text="${boardContent.writer}"></div>	
+			<span><strong>작성일</strong></span>&nbsp;
+			<div class="enrollDate" th:text="${boardContent.enrollDate}"></div>
+			<span><strong>조회수</strong></span>&nbsp;
+			<div class="count" th:text="${boardContent.count}"></div>
+			<br><br>
+			<span><strong>제목</strong></span>
 			<div class="boardTitle" th:text="${boardContent.boardTitle}"> 제목</div>
-
-			<div class="writer" th:text="${boardContent.writer}">작성자</div>
-			<div class="enrollDate" th:text="${boardContent.enrollDate}">작성일</div>
-
-			<div class="count" th:text="${boardContent.count}">조회수</div>
-
+			<br><br>
 			<div class="boardContent" th:text="${boardContent.boardContent}">내용</div>
 		</div>
+		<br>
 		<div th:each="attachment:${attachment}">
 			<span th:text="${attachment.originFilename}"></span>
 			<a class="btn btn-success download"
 				th:onclick="'javascript:board.download('+ ${attachment.fileNo} +');'">다운로드</a>
 		</div>
+		<br>
 		<div class="button btn-group">
 			<button class="btn" type="button" th:onclick="'location.href = \'' + @{/board/list} + '\''">목록가기</button>
 			<!-- 서브밋이 아닌 기본 버튼을 통한 유알엘 이동은 get 방식으로 넘어감 서블릿에서 get매핑으로 -->
-			<button class="btn btn-success" type="button"
+			<button class="btn btn-success" type="button" id="edit"
 				th:onclick="'location.href = \'' + @{/board/edit/{boardNo}(boardNo=${boardContent.boardNo})} + '\''">수정하기</button>
-			<button class="btn btn-danger" type="button"
+			<button class="btn btn-danger" type="button" id="delete"
 				th:onclick="'location.href = \'' + @{/board/api/delete/{boardNo}(boardNo=${boardContent.boardNo})} + '\''">삭제하기</button>
 		</div>
 		<br><br><br>
@@ -69,12 +53,12 @@
 			<table border="1" align="center" class="table table-stripped">
 				<thead>
 					<tr>
-						<th style="vertical-align:middle">댓글 작성</th>
-						<td colspan="2">
-							<textarea id="replyContent" cols="50" rows="3" style="resize:none;"
+						<th style="vertical-align:middle; width:100px;">댓글 작성</th>
+						<td colspan="2" style="width:500px;">
+							<textarea id="replyContent" cols="85" rows="3" style="resize:none;"
 								placeholder="로그인 후 작성 가능"></textarea>
 						</td>
-						<td style="vertical-align:middle">
+						<td style="vertical-align:middle; width:300px;">
 							<button type="button"
 								th:onclick="'javascript:boardReply.replyInsert('+ ${boardContent.boardNo} +');'">댓글등록</button>
 						</td>
