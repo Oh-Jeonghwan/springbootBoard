@@ -21,7 +21,5 @@ public interface BoardRepository extends JpaRepository<Board,Long>{
 
 	Board findByBoardNo(Long boardNo);
 
-
-	
 	
 }

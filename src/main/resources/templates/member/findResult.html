@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/common :: head('게시판')">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<div>
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
+    </nav>
+	<div class="outer container">
 		<h1 th:text="${result}"></h1>
+		<a th:href="@{/auth/loginForm}">로그인 하러 가기</a>
+		<span>&nbsp;|&nbsp;</span>
+		<a th:href="@{/}">홈으로</a>
+		<br><br><br><br>
 	</div>
-	<br><br><br><br>
+	
 </body>
 </html>

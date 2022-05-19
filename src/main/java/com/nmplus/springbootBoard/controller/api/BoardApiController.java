@@ -1,6 +1,6 @@
 package com.nmplus.springbootBoard.controller.api;
 
-import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +17,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
+import com.nmplus.springbootBoard.entity.BoardReply;
 import com.nmplus.springbootBoard.service.AttachmentService;
 import com.nmplus.springbootBoard.service.BoardReplyService;
 import com.nmplus.springbootBoard.service.BoardService;
@@ -114,30 +112,35 @@ public class BoardApiController {
 
 	// ajax통신으로 get에서 put로 바꿔보자
 	@GetMapping("/delete/{boardNo}")
-	public String boardDelete(HttpSession session
+	public String boardDelete(Model model
+							, Principal principal
 							, @PathVariable Long boardNo) {
-
-		Board boardSelect = boardService.boardSearch(boardNo);
-
-		Board board = new Board();
-
-		BeanUtils.copyProperties(boardSelect, board);
-
-		board.setStatus("N");
-
-		Board boardDelete = boardService.saveBoard(board);
 		
-		if (boardDelete == null) {
-			session.setAttribute("alertMsg", "글 삭제가 안 되었습니다.");
-			return "redirect:/board/content/" + boardNo;
-		} else {
-			boardReplyService.replyDelete(boardDelete);
-			attachmentService.attachmentDelete(boardDelete);
-			
-			session.setAttribute("alertMsg", "글 삭제가 되었습니다.");
-			return "redirect:/board/list";
-		}
+		Board boardSelect = boardService.boardSearch(boardNo);
+		
+		if(principal.getName().equals(boardSelect.getWriter())) {
+			Board board = new Board();
 
+			BeanUtils.copyProperties(boardSelect, board);
+
+			board.setStatus("N");
+
+			Board boardDelete = boardService.saveBoard(board);
+			
+			if (boardDelete == null) {
+				model.addAttribute("alertMsg", "글 삭제가 안 되었습니다.");
+				return "redirect:/board/content/" + boardNo;
+			} else {
+				boardReplyService.replyDelete(boardDelete);
+				attachmentService.attachmentDelete(boardDelete);
+				
+				model.addAttribute("alertMsg", "글 삭제가 되었습니다.");
+				return "redirect:/board/list";
+			}
+		} else {
+			model.addAttribute("alertMsg", "게시글 작성자가 아닙니다.");
+			return "redirect:/board/content/"+boardNo;
+		}
 	}
 
 	@ResponseBody
@@ -169,9 +172,21 @@ public class BoardApiController {
 
 	@ResponseBody
 	@PutMapping("/replyDelete")
-	public int replyDelete(@RequestParam Long replyNo) {
-		int result = boardReplyService.replyDelete(replyNo);
-		return result;
+	public int replyDelete(Principal principal
+						 , @RequestParam Long replyNo) {
+		BoardReply selectReply = boardReplyService.selectReply(replyNo);
+		if(principal.getName().equals(selectReply.getReplyWriter())) {
+			int result = boardReplyService.replyDelete(replyNo);
+				if(result>0) {//댓글의 작성자가 맞고 삭제가 됐을 때
+					return 1;
+				}
+				else { //댓글의 작성자가 맞지만 삭제가 안 되었을 때
+					return 0;
+				}
+		}
+		else {//댓글의 작성자가 아닐 떄
+			return -1;
+		}
 	}
 
 	/*

@@ -111,5 +111,10 @@ public class BoardReplyService {
 		}
 	}
 
+	public BoardReply selectReply(Long replyNo) {
+		return boardReplyRepository.findByReplyNo(replyNo);
+	}
+
+
 
 }

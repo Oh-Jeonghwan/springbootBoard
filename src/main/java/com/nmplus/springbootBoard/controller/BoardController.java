@@ -72,6 +72,7 @@ public class BoardController {
 	@GetMapping("/insert")
 	public String insert(Model model) {
 		// 등록을 위해 채울 새 보드 객체를 보내준다.
+		model.addAttribute("alertMsg","이게 되나?");
 		model.addAttribute("board", new Board());
 		return "board/insertForm";
 	}
@@ -96,7 +97,6 @@ public class BoardController {
 	// 게시글 수정 폼 띄워주는 메소드
 	@GetMapping("/edit/{boardNo}")
 	public String boardEdit(Model model
-						  , HttpSession session
 						  , @PathVariable Long boardNo
 						  , @AuthenticationPrincipal PrincipalDetail principal) {
 
@@ -106,7 +106,7 @@ public class BoardController {
 			model.addAttribute("board", boardEdit);
 			return "board/edit";
 		} else {
-			session.setAttribute("alertMsg", "글쓴이가 아닙니다.");
+			model.addAttribute("message", "작성자가 아닙니다.");
 			return "redirect:/board/content/"+boardNo;
 		}
 

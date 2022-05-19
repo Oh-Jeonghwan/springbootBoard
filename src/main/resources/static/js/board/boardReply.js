@@ -139,6 +139,10 @@ let boardReply = {
 						}
 
 					});
+				}else if(data==0){
+					alert("삭제가 안 되었습니다.");
+				}else{
+					alert("댓글의 작성자가 아닙니다.");
 				}
 			},
 			error:function(){

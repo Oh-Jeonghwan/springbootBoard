@@ -2,124 +2,125 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="fragments/common :: head('게시판')">
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#7952b3">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#7952b3">
 
-  <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
 
-  <!-- navbar css -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  <link rel="stylesheet" href="starter-template.css" th:href="@{/css/starter-template.css}">
-  <title>게시판</title>
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-  </style>
+    <!-- navbar css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="starter-template.css" th:href="@{/css/starter-template.css}">
+    <title>게시판</title>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
 </head>
 
 <body class="text-center">
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
-  </nav>
-  <div class="container">
-    <main class="form-signin">
-      <form th:action="@{/auth/loginProc}" method="post"><!-- 스프링 시큐리티가 이 요청을 가로채게 할 것이다. -->
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-        <div class="form-floating">
-          <input type="text" class="form-control" id="memberId" name="username" placeholder="아이디">
-        </div>
-        <br />
-        <div class="form-floating">
-          <input type="password" class="form-control" id="memberPwd" name = "password" placeholder="비밀번호">
-        </div>
-        
-        <!--  나중에 가능하면 알아보자
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
+    </nav>
+    <div class="container">
+        <main class="form-signin">
+            <form th:action="@{/auth/loginProc}" method="post">
+                <!-- 스프링 시큐리티가 이 요청을 가로채게 할 것이다. -->
+                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="memberId" name="username" placeholder="아이디">
+                </div>
+                <br />
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="memberPwd" name="password" placeholder="비밀번호">
+                </div>
+
+                <!--  나중에 가능하면 알아보자
         <div class="form-group form-check">
           <label class="form-check-label">
             <input class="from-check-input" type="checkbox" name="remember"> 아이디 저장
           </label>
         </div>
         -->
-        <div>
-        	<button id="btn-login" class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
-      	</div>
-      </form>
-      <br>
-      <div class="findWrap">
-        <ul>
-          <li><a th:href="@{/auth/joinForm}">회원가입</a></li>
-          <span>&nbsp;|&nbsp;</span>
-          <li><a href="#" data-toggle="modal" data-target="#findId">아이디 찾기</a></li>
-          <span>&nbsp;|&nbsp;</span>
-          <li><a href="#" data-toggle="modal" data-target="#findPwd">비밀번호 찾기</a></li>
-        </ul>
-      </div>
-    </main>
-    <!-- 팝업창 영역 -->
-    <!-- 아이디 찾기 팝업 -->
-    <div class="modal" id="findId">
-    	<div class="modal-dialog">
-    		<div class="modal-content">
-    			<div class="modal-header">
-    				<p>아이디 찾기</p>
-    			</div>
-    			<div class="modal-body">
-            <form th:action="@{/auth/findId}" method="post">
-              <div class="form-group">
-                <div class="form-floating m-3">
-                  <input type="text" name="memberName" placeholder="이름을 입력해 주세요."><br>
+                <div>
+                    <button id="btn-login" class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
                 </div>
-                <div class="form-floating m-3">
-                  <input type="text" name="email" placeholder="email을 입력해 주세요."><br>
-                </div>
-              </div>
-              <button class="btn btn-success">찾기</button>
-    		  <button type="button" class="btn btn-emergency" data-dismiss="modal">닫기</button>
             </form>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    
-    <!-- 비밀번호 찾기 팝업 -->
-    <div class="modal" id="findPwd">
-    	<div class="modal-dialog">
-    		<div class="modal-content">
-    			<div class="modal-header">
-    				<p>비밀번호 찾기</p>
-    			</div>
-    			<div class="modal-body">
-    				<input type="text">
-    			</div>
-    			<div class="modal-footer">
-    				<p>헤더</p>
-    				<button type="button" class="btn btn-success" data-dismiss="modal">닫기</button>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-  </div><!-- /.container -->
+            <br>
+            <div class="findWrap">
+                <ul>
+                    <li><a th:href="@{/auth/joinForm}">회원가입</a></li>
+                    <span>&nbsp;|&nbsp;</span>
+                    <li><a href="#" data-toggle="modal" data-target="#findId">아이디 찾기</a></li>
+                    <span>&nbsp;|&nbsp;</span>
+                    <li><a href="#" data-toggle="modal" data-target="#findPwd">비밀번호 찾기</a></li>
+                </ul>
+            </div>
+        </main>
+        <!-- 팝업창 영역 -->
+        <!-- 아이디 찾기 팝업 -->
+        <div class="modal" id="findId">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p>아이디 찾기</p>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/auth/findId}" method="post">
+                            <div class="form-group">
+                                <div class="form-floating m-3">
+                                    <input type="text" name="memberName" placeholder="이름을 입력해 주세요."><br>
+                                </div>
+                                <div class="form-floating m-3">
+                                    <input type="text" name="email" placeholder="email을 입력해 주세요."><br>
+                                </div>
+                            </div>
+                            <button class="btn btn-success">찾기</button>
+                            <button type="button" class="btn btn-emergency" data-dismiss="modal">닫기</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script></script>
-  <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-    crossorigin="anonymous"></script>
-    <br><br><br><br>
+        <!-- 비밀번호 찾기 팝업 -->
+        <div class="modal" id="findPwd">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p>비밀번호 찾기</p>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text">
+                    </div>
+                    <div class="modal-footer">
+                        <p>헤더</p>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+    </div>
+    <!-- /.container -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </body>
 
 </html>
