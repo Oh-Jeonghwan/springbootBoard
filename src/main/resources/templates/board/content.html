@@ -34,14 +34,19 @@
 			<div class="boardContent" th:text="${boardContent.boardContent}">내용</div>
 		</div>
 		<br>
-		<div th:each="attachment:${attachment}">
-			<span th:text="${attachment.originFilename}"></span>
-			<a class="btn btn-success download"
-				th:onclick="'javascript:board.download('+ ${attachment.fileNo} +');'">다운로드</a>
-		</div>
-		<br>
+		<fieldset id="attFieldset">
+			<legend>첨부파일</legend>
+			<div class="attchment" th:each="attachment:${attachment}">
+				<div th:each="attachment:${attachment}">
+					<span th:text="${attachment.originFilename}"></span>
+					<a class="btn btn-success download"
+						th:onclick="'javascript:board.download('+ ${attachment.fileNo} +');'">다운로드</a>
+				</div>
+			</div>
+		</fieldset>
+		<br><br>
 		<div class="button btn-group">
-			<button class="btn" type="button" th:onclick="'location.href = \'' + @{/board/list} + '\''">목록가기</button>
+			<button class="btn btn-primary" type="button" th:onclick="'location.href = \'' + @{/board/list} + '\''">목록가기</button>
 			<!-- 서브밋이 아닌 기본 버튼을 통한 유알엘 이동은 get 방식으로 넘어감 서블릿에서 get매핑으로 -->
 			<button class="btn btn-success" type="button" id="edit"
 				th:onclick="'location.href = \'' + @{/board/edit/{boardNo}(boardNo=${boardContent.boardNo})} + '\''">수정하기</button>
@@ -85,6 +90,7 @@
 		crossorigin="anonymous"></script>
 	<script src="/js/board/boardReply.js"></script>
 	<script src="/js/board/board.js"></script>
+	<br><br><br><br>
 </body>
 
 </html>

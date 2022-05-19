@@ -150,12 +150,3 @@ let boardReply = {
 
 
 }
-
-let index = {
-	init:function(){
-		
-	}
-	
-}
-
-index.init();

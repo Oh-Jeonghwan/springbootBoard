@@ -10,7 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
-import com.nmplus.springbootBoard.controller.api.BoardApiController;
 import com.nmplus.springbootBoard.entity.BoardReply;
 import com.nmplus.springbootBoard.repository.BoardReplyRepository;
 import com.nmplus.springbootBoard.repository.BoardRepository;

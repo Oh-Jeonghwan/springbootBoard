@@ -60,10 +60,8 @@ public class Board {
 	private int count;
 	
 	@Column
-	@OneToMany(
-			mappedBy = "board"
-		  , cascade = {CascadeType.PERSIST}
-			)
+	@OneToMany(mappedBy = "board"
+		  , cascade = {CascadeType.PERSIST})
 	@JsonIgnoreProperties({"board"})
 	private List<Attachment> attachment;
 	
