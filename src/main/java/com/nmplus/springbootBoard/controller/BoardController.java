@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
 import com.nmplus.springbootBoard.service.AttachmentService;
@@ -45,22 +46,32 @@ public class BoardController {
 
 		Page<Board> boards = boardService.selectList(pageable, condition, keyword); // PageRequest.of(시작 인덱스 0, 보여줄 사이즈
 																					// 20)
-
-		int startPage = Math.max(1, boards.getPageable().getPageNumber() - 9);
-		// 1과 (현재 페이지 - 9) 중 큰 것 반환(현재 페이지가 10을 넘기 전까지 1반환)
-
-		int endPage = Math.min(boards.getTotalPages(), boards.getPageable().getPageNumber() + 10);
-		// 전체 페이지 수와 현재 페이지 + 10 중 작은 것 반환(전체 페이지가 11일 경우 현재 페이지가 2를 넘어가면 전체 페이지 수(11)
-		// 반환 )
-
 		int page = boards.getPageable().getPageNumber();
 
 		int totalPages = boards.getTotalPages();
+		
+		int startPage = Math.max(1, page - 9);
+		// 1과 (현재 페이지 - 9) 중 큰 것 반환(현재 페이지가 10을 넘기 전까지 1반환)
 
-		// endPage와 totalPage가 값이 0이 넘어가는 것을 방지하기 위해
+		int endPage = Math.min(totalPages, page + 10);
+		// 전체 페이지 수와 현재 페이지 + 10 중 작은 것 반환(전체 페이지가 11일 경우 현재 페이지가 2를 넘어가면 전체 페이지 수(11)
+		// 반환 )
+
+		// 조회된 게시물이 없을 떄 endPage와 totalPage가 값이 0이 넘어가는 것을 방지하기 위해
 		endPage = boardService.zeroToOne(endPage);
 		totalPages = boardService.zeroToOne(totalPages);
-
+		
+		if(page<10) {
+			startPage = 1;
+			endPage = 10;
+		}else if(10<=page && page<totalPages-9) {
+			startPage = page+1;
+			endPage = startPage+9;
+		}else if(page>=totalPages-9 || page>totalPages){
+			startPage=totalPages-9;
+			endPage = totalPages;
+		}
+		
 		model.addAttribute("page", page);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
@@ -72,7 +83,6 @@ public class BoardController {
 	@GetMapping("/insert")
 	public String insert(Model model) {
 		// 등록을 위해 채울 새 보드 객체를 보내준다.
-		model.addAttribute("alertMsg","이게 되나?");
 		model.addAttribute("board", new Board());
 		return "board/insertForm";
 	}
@@ -83,9 +93,9 @@ public class BoardController {
 
 		Board boardContent = boardService.boardSearch(boardNo);
 		List<Attachment> attachment = attachmentService.attachSearch(boardContent);
-
+		
 		if (boardContent == null || boardContent.getStatus().equals("N")) {
-			model.addAttribute("alertMsg", "게시물이 존재하지 않습니다.");
+			model.addAttribute("reAlertMsg", "게시물이 존재하지 않습니다.");
 			return "redirect:/board/list";
 		} else {
 			model.addAttribute("attachment",attachment);
@@ -106,7 +116,7 @@ public class BoardController {
 			model.addAttribute("board", boardEdit);
 			return "board/edit";
 		} else {
-			model.addAttribute("message", "작성자가 아닙니다.");
+			model.addAttribute("reAlertMsg", "작성자가 아닙니다.");
 			return "redirect:/board/content/"+boardNo;
 		}
 

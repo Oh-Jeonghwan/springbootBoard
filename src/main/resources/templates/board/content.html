@@ -16,14 +16,6 @@
 <body th:onload="'javascript:boardReply.replyList('+ ${boardContent.boardNo} +');'">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
     </nav>
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        let message = /*[[${message}]]*/ ;
-        /*]]>*/
-        if (message != null) {
-            alert(message);
-        }
-    </script>
 
     <div class="outer container">
         <h2>게시글 상세</h2>

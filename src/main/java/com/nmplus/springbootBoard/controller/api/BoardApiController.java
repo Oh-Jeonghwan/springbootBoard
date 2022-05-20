@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
 import com.nmplus.springbootBoard.entity.BoardReply;
@@ -128,13 +129,13 @@ public class BoardApiController {
 			Board boardDelete = boardService.saveBoard(board);
 			
 			if (boardDelete == null) {
-				model.addAttribute("alertMsg", "글 삭제가 안 되었습니다.");
+				model.addAttribute("reAlertMsg", "글 삭제가 안 되었습니다.");
 				return "redirect:/board/content/" + boardNo;
 			} else {
 				boardReplyService.replyDelete(boardDelete);
 				attachmentService.attachmentDelete(boardDelete);
 				
-				model.addAttribute("alertMsg", "글 삭제가 되었습니다.");
+				model.addAttribute("reAlertMsg", "글 삭제가 되었습니다.");
 				return "redirect:/board/list";
 			}
 		} else {
