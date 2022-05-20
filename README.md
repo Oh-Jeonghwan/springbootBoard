@@ -109,27 +109,39 @@ runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
   
 # 이번에 사용한 어노테이션
 @Entity: 데이터 베이스 연동을 위한 모델 클래스라는 것을 알려주는 어노테이션
+
 *PK를 나타내기 위해 @Id 어노테이션을 사용하며, 생성 방법을 정의하기 위해 @GeneratedValue 를 사용한다
+
 @Id: 기본키라는 것을 알려주는 어노테이션
+
 @GeneratedValue(strategy = identity, auto. sequence(DB에 따로 시퀀스 생성해야). Table
-	전략에 따른 차이점 찾아보기
+전략에 따른 차이점 찾아보기
 프로젝트에 연결된 DB의 넘버링 전략을 따라간다.(오라클-시퀀스, 마리아-오토인크레먼트…)
 @Mapping : 매퍼 인터페이스임을 명시(Repository, 매퍼는 직접 DB에 접촉) 매퍼.xml파일 namespace에 매퍼 파일의 경로명
 @Column
 @CreatedDate
 @LastModifiedDate
 @EnableJpaAuditing : Application 메인 클래스에 넣어 audit 활성화 해주는 어노테이션
+
 *auditing란? 도메인에서 공통적으로 쓰이는 필드나 컬럼들에 대해 자동으로 값을 넣어주는 기능, 대표적으로 생성일, 수정일, 생성자, 수정자가 있다.
+
 @EntityListeners(AuiditingEntityListener.class): Entity에 임포트
 참고: https://webcoding-start.tistory.com/53  baseTImeEntity클래스 이용 audit(사용할 Entity 여러 개일 때)
 참고: https://compunication.tistory.com/27 vo 컬럼에 직접 넣음(게시판 하나일 때 사용 가능)
+
 @DynamicInsert : 디폴트 설정된 컬럼에 null인 값이 들어가게 되면 디폴트가 작용되는 것이 아니라 null이 들어가 null오류가 날 수 있는데, null인 값의 인서트를 막아줌으로써 디폴트 값이 적용될 수 있도록 한다.
+
 @Data 는 안 쓴다. Setter 를 해주지 말아야할 필드도 있기 때문에
+
 @Builder 필요한 컬럼들을 자유롭게 쓸 수 있도록, 
+
 @PageableDefault(size = 10, sort="boardNo", direction=Sort.Direction.DESC) Pageable pageable
+
 @JsonIgnoreProperties: 무함참조 방지->다대일 또는 다대다 매핑을 하다보면 무한참조가 일어난다.
 Ex) 보드안에 첨부파일 컬럼이 있고 첨부파일에는 보드 객체 형태로 primary키를 조인해오는 컬럼이 있는데 이때 서로 참조하면서 무한참조가 일어난다.
-그때 조인의 주체가 아닌 테이블(주키를 주는 테이블, 여기서는 보드 테이블) 의 해당 컬럼(보드테이블의 첨부파일 컬럼)에 @JsonIgnoreProperties({“board”})을 걸어서 Json 파싱을 방지하게 되면 Json 안에 Json 형태로 무한 참조하는 것을 방지할 수 있다.(이 컬럼에 조인된 테이블의 해당 컬럼(Attachment 테이블의 ‘board’컬럼은 Json으로 파싱하지 않는다.))
+그때 조인의 주체가 아닌 테이블(주키를 주는 테이블, 여기서는 보드 테이블) 의 해당 컬럼(보드테이블의 첨부파일 컬럼)에 
+
+@JsonIgnoreProperties({“board”})을 걸어서 Json 파싱을 방지하게 되면 Json 안에 Json 형태로 무한 참조하는 것을 방지할 수 있다.(이 컬럼에 조인된 테이블의 해당 컬럼(Attachment 테이블의 ‘board’컬럼은 Json으로 파싱하지 않는다.))
 
 # 스프링 시큐리티 - 더 공부 필요(아직 이해하지 못 함)
 
