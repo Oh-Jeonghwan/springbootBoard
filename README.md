@@ -34,25 +34,42 @@ DBMS: MariaDB 10.6
 
 graddle란? 
   groovy언어 기반의 빌드 도구, maven과 ant의 장점을 모아놓았음 
+  
   •	Ant처럼 유연한 범용 빌드 도구 (A very flexible general purpose build tool like Ant.)
+  
   •	Maven을 사용할 수 있는 변환 가능 컨벤션 프레임 워크 (Switchable, build-by-convention frameworks a la Maven. But we never lock you in!)
+  
   •	멀티 프로젝트에 사용하기 좋음 (Very powerful support for multi-project builds.)
+  
   •	Apache Ivy에 기반한 강력한 의존성 관리 (Very powerful dependency management (based on Apache Ivy))
+  
   •	Maven과 Ivy 레파지토리 완전 지원 (Full support for your existing Maven or Ivy repository infrastructure.)
+  
   •	원격 저장소나, pom, ivy 파일 없이 연결되는 의존성 관리 지원
     (Support for transitive dependency management without the need for remote repositories or pom.xml and ivy.xml files.)
+    
   •	그루비 문법 사용 (Groovy build scripts.)
+  
   •	빌드를 설명하는 풍부한 도메인 모델 (A rich domain model for describing your build.)
+  
   
   maven과의 비교
    •  Build라는 동적인 요소를 XML로 정의하기에는 어려운 부분이 많다.
+   
    •	설정 내용이 길어지고 가독성 떨어짐
+   
    •	의존관계가 복잡한 프로젝트 설정하기에 부적절
+   
    •	상속구조를 이용한 멀티 모듈 구현
+   
    •	특정 설정을 소수의 모듈에서 공유하기 위해서는 부모 프로젝트를 생성하여 상속하게 해야 함 (상속의 단점 생김)
+   
    •  Gradle은 Groovy를 사용하기 때문에, 동적인 빌드는 Groovy 스크립트로 플러그인을 호출하거나 직접 코드를 짜면 된다.
+   
    •	Configuration Injection 방식을 사용해서 공통 모듈을 상속해서 사용하는 단점을 커버했다.
+   
    •	설정 주입 시 프로젝트의 조건을 체크할 수 있어서 프로젝트별로 주입되는 설정을 다르게 할 수 있다
+   
 
 참고:https://spring.io/projects/spring-boot#overview
 
