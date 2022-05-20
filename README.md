@@ -1,6 +1,6 @@
 # springbootBoard
 
-#개발환경
+# 개발환경
 개발 툴: eclipse 4.15.0, visual code studio 1.66.2, HeidiSQL 11.3.0.6295
 
 DBMS: MariaDB 10.6
@@ -11,10 +11,10 @@ DBMS: MariaDB 10.6
 
 서버: tomcat-embed 9.0.62
 
-#개발 목적
+# 개발 목적
 스프링 부트를 통해 스프링 시큐리티와 JPA을 연습하기 위한 게시판 만들기
 
-#기능 구현
+# 기능 구현
 1. 게시글(작성(파일 업로드), 조회(검색), 수정, 삭제)
 2. 회원(가입, 수정)
 3. 시큐리티를 이용한 암호화
@@ -76,11 +76,11 @@ spring boot devtools란?
 관련 디펜던시: 
 developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-#나의 스프링 부트 설정(build.gradle, application.properties)
+# 나의 스프링 부트 설정(build.gradle, application.properties)
 ![화면 캡처 2022-05-20 160712](https://user-images.githubusercontent.com/98066327/169472889-65727a03-89ac-4d9a-bf7b-e973d5d41c3d.png)
 ![화면 캡처 2022-05-20 160738](https://user-images.githubusercontent.com/98066327/169473061-5913f5cf-78ab-4e03-b852-f4f1fe391ff2.png)
 
-#마리아 DB 연동
+# 마리아 DB 연동
 연동을 위한 스프링 부트에서의 설정
 
 -build.gradle
@@ -107,7 +107,7 @@ runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
   server.port=8900
   참고: https://www.devkcj.com/gatsby-springMVC-2/
   
-#이번에 사용한 어노테이션
+# 이번에 사용한 어노테이션
 @Entity: 데이터 베이스 연동을 위한 모델 클래스라는 것을 알려주는 어노테이션
 *PK를 나타내기 위해 @Id 어노테이션을 사용하며, 생성 방법을 정의하기 위해 @GeneratedValue 를 사용한다
 @Id: 기본키라는 것을 알려주는 어노테이션
@@ -131,7 +131,7 @@ runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 Ex) 보드안에 첨부파일 컬럼이 있고 첨부파일에는 보드 객체 형태로 primary키를 조인해오는 컬럼이 있는데 이때 서로 참조하면서 무한참조가 일어난다.
 그때 조인의 주체가 아닌 테이블(주키를 주는 테이블, 여기서는 보드 테이블) 의 해당 컬럼(보드테이블의 첨부파일 컬럼)에 @JsonIgnoreProperties({“board”})을 걸어서 Json 파싱을 방지하게 되면 Json 안에 Json 형태로 무한 참조하는 것을 방지할 수 있다.(이 컬럼에 조인된 테이블의 해당 컬럼(Attachment 테이블의 ‘board’컬럼은 Json으로 파싱하지 않는다.))
 
-#스프링 시큐리티 - 더 공부 필요(아직 이해하지 못 함)
+# 스프링 시큐리티 - 더 공부 필요(아직 이해하지 못 함)
 
 -참고:https://spring.io/guides/gs/securing-web/
 
@@ -148,20 +148,20 @@ Ex) 보드안에 첨부파일 컬럼이 있고 첨부파일에는 보드 객체 
 -로그인 폼의 아이디랑 비밀번호 name 값이 username, password이어야 값이 넘어감
 
 
-#예외처리(구현하지 못 함 더 공부 필요)
+# 예외처리(구현하지 못 함 더 공부 필요)
   예외처리 방식은 크게 2가지
 -@ControlerAdvice를 통한 모든 controller에서 발생할 수 있는 예외 처리(@RestControllerAdvice)
 -@ExceptionHandler를 통한 특정  Controller의 예외 처리: 어노테이션 뒤에 괄호를 붙여 어떤 exceptionclass 를 처리할 지 설정할 수 있음(@ExceptionHandler(00Exception.class)) 이때 세부적인 예외처리를 해준 메소드가 더 우선순위가 높다., @ControllerAdvice에서도 사용하지만 일반 Controller 안에서도 사용 가능(이때 컨트롤러에 있는 예외처리가 우선순위가 높다.)
   
   
-#Entity vs DTO vs Vo
+# Entity vs DTO vs Vo
   Entity(DB와 직접연결 setter 지양) 
   vs DTO(게터 세터있고 비즈니스 로직 없는 데이터만 왔다 갔다 하는 클래스)
   vs VO(게터 세터 있고 비즈니스 로직 있는):
 Entity는 DB와 직접연결 하는 클래스로 값 변환하는 것을 지양하고 DTO나 VO로 변환하여 쓴다. 
 일반 사용시에는 필드를 맞춰서 beanutils.copyproperties(source,target)등의 기능을 통해 복사하여서 쓰고, save 시에는 Entity에서 @Builder 하여서 빌드된 필드대로 DTO나 VO 클래스에 Entity객체를 받아서 toEntity 메소드를 만들어 빌드된 필드만으로 Entity객체를 만들어 사용 
   
-#파일 업로드/ 파일 다운로드
+# 파일 업로드/ 파일 다운로드
 파일 업로드: 
 파일 서버로 보내는 방법
 1. form 태그의 enctype 를 multipart/form-data로 설정/ 한 개만 올릴 것이 아니라면 multiple 설정
@@ -205,7 +205,7 @@ while((data=(fileInputStream.read(b, 0, b.length))) != -1){
 11. 자원들을 닫아준다.(stream들이 제대로 release 되기 위해서는 닫혀야 한다고 설명되어 있다.)
 
   
-#JPA(JAVA Persistent API)란? 
+# JPA(JAVA Persistent API)란? 
 API(Application Programming Interface)란? 
 컴퓨터랑 프로그램을 연결해주는 인터페이스 (cf. UI: 사용자랑 연결해주는 인터페이스)
 
@@ -231,7 +231,7 @@ List<BoardReply> list=boardReplyRepository.findByBoardAndStatus(board, status, s
 *페이징 시에 정렬하는 방법
 @PageableDefault(size = 10, sort="boardNo", direction=Sort.Direction.DESC) Pageable pageable
 
-#JPA로 페이징하는 방법
+# JPA로 페이징하는 방법
 Controller 단
 ![화면 캡처 2022-05-20 095413](https://user-images.githubusercontent.com/98066327/169475135-bd3ebef8-ea4d-4c49-9f94-bdcac67c4da7.png)
 
@@ -253,7 +253,7 @@ view 단
 (현재 페이지는 0부터 출력되기에 page+1로 해주었고 링크 연결 시에는 다시 i-1로 해주었다.)
 
 
-#느낀점
+# 느낀점
 공부할 것이 겁나 많이 늘었다.
 -스프링 부트
 -JPA
