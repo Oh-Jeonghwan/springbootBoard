@@ -10,7 +10,7 @@ let board = {
 			data: {attNo: e},
 			success: function(){
 			},
-			error: function(){
+			error: function(e){
 				console.log("att 다운로드 실패");
 			}
 		});

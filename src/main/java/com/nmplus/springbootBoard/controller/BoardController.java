@@ -1,7 +1,9 @@
 package com.nmplus.springbootBoard.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetail;
 import com.nmplus.springbootBoard.service.AttachmentService;
@@ -40,6 +43,7 @@ public class BoardController {
 	// 리스트까지는 로그인 인증 안 해도 볼 수 있도록 허용
 	@GetMapping("/list")
 	public String list(Model model
+					 , HttpServletRequest request
 					 , @PageableDefault(size = 10, sort = "boardNo", direction = Sort.Direction.DESC) Pageable pageable
 					 , @RequestParam(required = false, defaultValue = "") String condition
 					 , @RequestParam(required = false, defaultValue = "") String keyword) {
@@ -61,17 +65,30 @@ public class BoardController {
 		endPage = boardService.zeroToOne(endPage);
 		totalPages = boardService.zeroToOne(totalPages);
 		
-		if(page<10) {
+		//한페이지에 나타낼 페이징 시작번호와 끝번호 조정 코드
+		if(totalPages<=10) { //총 페이지가 10이하일 때  
+			startPage=1;
+			endPage=totalPages;
+		}else if(page<10) { //총 페이지가 10초과이면서, 현재 페이지가 10미만일 때
 			startPage = 1;
 			endPage = 10;
-		}else if(10<=page && page<totalPages-9) {
+		}else if(10<=page && page<totalPages-9) {//총 페이지가 10초과이면서, 현재페이지가 10이상이고, 총 페이지와 현재페이지의 차가 9초과일 때
 			startPage = page+1;
 			endPage = startPage+9;
-		}else if(page>=totalPages-9 || page>totalPages){
+		}else if(page>=totalPages-9 || page>totalPages){//총 페이지와 현재 페이지가 9이상 차이나지 않을 때, 오류로 현재페이지가 총 페이지를 초과할 때
 			startPage=totalPages-9;
 			endPage = totalPages;
 		}
 		
+		//게시물 존재하지 않을 시 메시지 띄워즐 세션을 받아오는 코드
+		Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
+		
+		String alertMsg = null;
+		if(inputFlashMap != null) {
+			alertMsg = (String)inputFlashMap.get("alertMsg");
+		}
+		
+		model.addAttribute("alertMsg", alertMsg);
 		model.addAttribute("page", page);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
@@ -81,7 +98,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/insert")
-	public String insert(Model model) {
+	public String insert(Model model, HttpSession session) {
 		// 등록을 위해 채울 새 보드 객체를 보내준다.
 		model.addAttribute("board", new Board());
 		return "board/insertForm";
@@ -89,15 +106,27 @@ public class BoardController {
 
 	@GetMapping("/content/{boardNo}")
 	public String contentSearch(Model model
-							  , @PathVariable Long boardNo) {
-
+							  , HttpServletRequest request
+							  , RedirectAttributes redirect
+							  , @PathVariable Long boardNo){
+		
+		//리다이렉트 되어 보내진 메시지가 있을 때 담아주는 코드
+		Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
+		
+		String alertMsg = null;
+		if(inputFlashMap != null) {
+			alertMsg = (String)inputFlashMap.get("alertMsg");
+		}
+		
+		//게시글 정보 불러오는 코드
 		Board boardContent = boardService.boardSearch(boardNo);
 		List<Attachment> attachment = attachmentService.attachSearch(boardContent);
 		
 		if (boardContent == null || boardContent.getStatus().equals("N")) {
-			model.addAttribute("reAlertMsg", "게시물이 존재하지 않습니다.");
+			redirect.addFlashAttribute("alertMsg", "게시물이 존재하지 않습니다.");
 			return "redirect:/board/list";
 		} else {
+			model.addAttribute("alertMsg",alertMsg);
 			model.addAttribute("attachment",attachment);
 			model.addAttribute("boardContent", boardContent);
 			return "board/content";
@@ -107,6 +136,7 @@ public class BoardController {
 	// 게시글 수정 폼 띄워주는 메소드
 	@GetMapping("/edit/{boardNo}")
 	public String boardEdit(Model model
+						  , RedirectAttributes redirect
 						  , @PathVariable Long boardNo
 						  , @AuthenticationPrincipal PrincipalDetail principal) {
 
@@ -116,7 +146,8 @@ public class BoardController {
 			model.addAttribute("board", boardEdit);
 			return "board/edit";
 		} else {
-			model.addAttribute("reAlertMsg", "작성자가 아닙니다.");
+			String msg = "작성자가 아닙니다.";
+			redirect.addFlashAttribute("alertMsg", msg);
 			return "redirect:/board/content/"+boardNo;
 		}
 

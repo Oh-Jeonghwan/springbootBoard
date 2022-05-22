@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -115,6 +117,7 @@ public class BoardApiController {
 	@GetMapping("/delete/{boardNo}")
 	public String boardDelete(Model model
 							, Principal principal
+							, RedirectAttributes redirect
 							, @PathVariable Long boardNo) {
 		
 		Board boardSelect = boardService.boardSearch(boardNo);
@@ -129,28 +132,30 @@ public class BoardApiController {
 			Board boardDelete = boardService.saveBoard(board);
 			
 			if (boardDelete == null) {
-				model.addAttribute("reAlertMsg", "글 삭제가 안 되었습니다.");
+				redirect.addFlashAttribute("alertMsg", "글 삭제가 안 되었습니다.");
 				return "redirect:/board/content/" + boardNo;
 			} else {
 				boardReplyService.replyDelete(boardDelete);
 				attachmentService.attachmentDelete(boardDelete);
 				
-				model.addAttribute("reAlertMsg", "글 삭제가 되었습니다.");
+				redirect.addFlashAttribute("alertMsg", "글 삭제가 되었습니다.");
 				return "redirect:/board/list";
 			}
 		} else {
-			model.addAttribute("alertMsg", "게시글 작성자가 아닙니다.");
+			redirect.addFlashAttribute("alertMsg", "게시글 작성자가 아닙니다.");
 			return "redirect:/board/content/"+boardNo;
 		}
 	}
 
 	@ResponseBody
 	@PostMapping("/download")
-	public void download(HttpServletResponse response
+	public ResponseEntity<Resource> download(HttpServletResponse response
 					   , HttpServletRequest request
 					   , @RequestParam Long attNo) throws Exception {
 		// ResponseEntity<Resource>
-		attachmentService.download(response, request, attNo);
+		ResponseEntity<Resource> asdf = attachmentService.download(response, request, attNo);
+		log.debug("뭐가 나오냐?"+asdf);
+		return asdf;
 	}
 
 	@ResponseBody
@@ -158,7 +163,7 @@ public class BoardApiController {
 	public BoardReplyVo replyInsert(@RequestParam Long boardNo
 								  , @RequestParam String replyContent
 								  , @AuthenticationPrincipal PrincipalDetail principal) {
-
+		
 		BoardReplyVo reply = boardReplyService.replyInsert(boardNo, replyContent, principal);
 
 		return reply;
@@ -175,7 +180,9 @@ public class BoardApiController {
 	@PutMapping("/replyDelete")
 	public int replyDelete(Principal principal
 						 , @RequestParam Long replyNo) {
+		
 		BoardReply selectReply = boardReplyService.selectReply(replyNo);
+		
 		if(principal.getName().equals(selectReply.getReplyWriter())) {
 			int result = boardReplyService.replyDelete(replyNo);
 				if(result>0) {//댓글의 작성자가 맞고 삭제가 됐을 때

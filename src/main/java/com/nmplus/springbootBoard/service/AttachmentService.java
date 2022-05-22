@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,10 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriUtils;
 
 import com.nmplus.springbootBoard.entity.BoardReply;
 import com.nmplus.springbootBoard.repository.AttachmentRepository;
@@ -71,7 +74,7 @@ public class AttachmentService {
 
 	}
 
-	public void download(HttpServletResponse response
+	public ResponseEntity<Resource> download(HttpServletResponse response
 					   , HttpServletRequest request
 					   , Long attNo) throws Exception{
 		
@@ -86,68 +89,79 @@ public class AttachmentService {
 		Attachment attachment = attachmentRepository.findByFileNo(attNo);
 		String path = System.getProperty("user.dir") + attachment.getFilePath()+attachment.getFilename();
 		
-		//경로를 통해 파일화 시켜준다.
-		File file = new File(path);
+		UrlResource resource = new UrlResource("file:"+path);
 		
-		//파일을 스트림에 통과될 수 있도록 바이트로 변환해주는 클래스
-		FileInputStream fileInputStream = null;
-		//서블릿 컨테이너에 를 임플리먼트하는 추상클래스, 고객에게 바이너리 데이터를 보내주기 위한 아웃풋 스트림을 제공해주는 클래스.
-	    ServletOutputStream servletOutputStream = null;
-	 
-	    try{
-	        String downName = null;
-	        
-	        //파일 인코딩(브라우저 마다 다르다.)
-	        downName = new String(attachment.getOriginFilename().getBytes("UTF-8"), "ISO-8859-1");
-	        /*
-	         * String browser = request.getHeader("User-Agent");
-		        //파일 인코딩
-		        if(browser.contains("MSIE") || browser.contains("Trident") || browser.contains("Chrome")){//브라우저 확인 파일명 encode  
-		            downName = URLEncoder.encode(fileName,"UTF-8").replaceAll("\\+", "%20");
-		        }else{
-		             downName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
-		        }
-	         * */
-	        
-	        
-	      //들어오는 파일이 어떤 형태인지 알여주는웹페이지 자체이거나 웹페이지의 일부인지, 아니면 attachment로써 다운로드 되거나 로컬에 저장될 용도록 쓰이는 것인지를 알려주는 헤더
-	        response.setHeader("Content-Disposition","attachment;filename=\"" + downName+"\"");
-	        
-	        response.setContentType("application/octet-stream");
-	        
-	        response.setHeader("Content-Transfer-Encoding", "binary;");
-	        
-	        fileInputStream = new FileInputStream(file);
-	        servletOutputStream = response.getOutputStream();
-	 
-	        byte b [] = new byte[1024];
-	        int data = 0;
-	        
-	      //파일 인풋스트림에서 바이트를 다 읽어올 때까지 반복하여 outputstream에 쓴다.(다 읽어오면 -1반환)
-	        while((data=(fileInputStream.read(b, 0, b.length))) != -1){ 
-	            servletOutputStream.write(b, 0, data);
-	        }
-	 
-	        servletOutputStream.flush();//출력
-	        
-	    }catch (Exception e) {
-	        e.printStackTrace();
-	    }finally{
-	        if(servletOutputStream!=null){
-	            try{
-	                servletOutputStream.close();
-	            }catch (IOException e){
-	                e.printStackTrace();
-	            }
-	        }
-	        if(fileInputStream!=null){
-	            try{
-	                fileInputStream.close();
-	            }catch (IOException e){
-	                e.printStackTrace();
-	            }
-	        }
-	    }
+		String encodeFileName = UriUtils.encode(attachment.getOriginFilename(), StandardCharsets.UTF_8);
+		
+		String contentDisposition = "attachment; filename=\"" + encodeFileName + "\"";
+		
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition)
+				.body(resource);
+		
+		
+//		//경로를 통해 파일화 시켜준다.
+//		File file = new File(path);
+//		
+//		//파일을 스트림에 통과될 수 있도록 바이트로 변환해주는 클래스
+//		FileInputStream fileInputStream = null;
+//		//서블릿 컨테이너에 를 임플리먼트하는 추상클래스, 고객에게 바이너리 데이터를 보내주기 위한 아웃풋 스트림을 제공해주는 클래스.
+//	    ServletOutputStream servletOutputStream = null;
+//	 
+//	    try{
+//	        String downName = null;
+//	        
+//	        //파일 인코딩(브라우저 마다 다르다.)
+//	        downName = new String(attachment.getOriginFilename().getBytes("UTF-8"), "ISO-8859-1");
+//	        /*
+//	         * String browser = request.getHeader("User-Agent");
+//		        //파일 인코딩
+//		        if(browser.contains("MSIE") || browser.contains("Trident") || browser.contains("Chrome")){//브라우저 확인 파일명 encode  
+//		            downName = URLEncoder.encode(fileName,"UTF-8").replaceAll("\\+", "%20");
+//		        }else{
+//		             downName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+//		        }
+//	         * */
+//	        
+//	        
+//	      //들어오는 파일이 어떤 형태인지 알여주는웹페이지 자체이거나 웹페이지의 일부인지, 아니면 attachment로써 다운로드 되거나 로컬에 저장될 용도록 쓰이는 것인지를 알려주는 헤더
+//	        response.setHeader("Content-Disposition","attachment;filename=\"" + downName+"\"");
+//	        
+//	        response.setContentType("application/octet-stream");
+//	        
+//	        response.setHeader("Content-Transfer-Encoding", "binary;");
+//	        
+//	        fileInputStream = new FileInputStream(file);
+//	        servletOutputStream = response.getOutputStream();
+//	 
+//	        byte b [] = new byte[1024];
+//	        int data = 0;
+//	        
+//	      //파일 인풋스트림에서 바이트를 다 읽어올 때까지 반복하여 outputstream에 쓴다.(다 읽어오면 -1반환)
+//	        while((data=(fileInputStream.read(b, 0, b.length))) != -1){ 
+//	            servletOutputStream.write(b, 0, data);
+//	        }
+//	 
+//	        servletOutputStream.flush();//출력
+//	        
+//	    }catch (Exception e) {
+//	        e.printStackTrace();
+//	    }finally{
+//	        if(servletOutputStream!=null){
+//	            try{
+//	                servletOutputStream.close();
+//	            }catch (IOException e){
+//	                e.printStackTrace();
+//	            }
+//	        }
+//	        if(fileInputStream!=null){
+//	            try{
+//	                fileInputStream.close();
+//	            }catch (IOException e){
+//	                e.printStackTrace();
+//	            }
+//	        }
+//	    }
 		
 		//파일화한 것을 바이트로 변환시켜준다.
 //		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));

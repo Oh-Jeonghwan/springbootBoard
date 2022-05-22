@@ -1,1 +1,0 @@
-Exception processing template "helloJava": Error resolving template [fragments/common], template might not exist or might not be accessible by any of the configured Template Resolvers (template: "helloJava" - line 3, col 9)

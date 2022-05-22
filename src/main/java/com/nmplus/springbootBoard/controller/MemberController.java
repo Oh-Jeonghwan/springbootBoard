@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nmplus.springbootBoard.service.MemberService;
 import com.nmplus.springbootBoard.vo.Member;
@@ -24,9 +25,11 @@ public class MemberController {
 	
 	@GetMapping("/auth/joinForm")
 	public String join(Principal principal
-					  , Model model){
+					  , Model model
+					  , RedirectAttributes redirect){
+		
 		if(principal!=null) {
-			model.addAttribute("alertMsg","이미 회원이십니다.");
+			redirect.addFlashAttribute("alertMsg","이미 회원이십니다.");
 			return "redirect:/";
 		}else {
 			return "member/joinForm";
@@ -35,8 +38,16 @@ public class MemberController {
 	}
 
 	@GetMapping("/auth/loginForm")
-	public String login() {
-		return "member/loginForm";
+	public String login(Principal principal
+					  , Model model
+					  , RedirectAttributes redirect) {
+		if(principal!=null) {
+			redirect.addFlashAttribute("alertMsg","이미 로그인이 되어있습니다.");
+			return "redirect:/";
+		}else {
+			return "member/loginForm";
+		}
+		
 	}
 	
 	@GetMapping("/user/info")
@@ -60,7 +71,11 @@ public class MemberController {
 		Member result = memberService.findId(memberName, email);
 		
 		if(result!=null) {
-			model.addAttribute("result", "조회하신 ID는 "+result.getMemberId()+"입니다.");
+			if(result.getStatus().equals("N")) {
+				model.addAttribute("result", "이미 탈퇴한 아이디입니다.");
+			}else {
+				model.addAttribute("result", "조회하신 ID는 "+result.getMemberId()+"입니다.");
+			}
 		}else {
 			model.addAttribute("result", "찾으시는 계정이 없습니다.");
 		}

@@ -38,6 +38,9 @@ public class BoardReplyService {
 		Board board = boardRepository.findByBoardNo(boardNo);
 		BoardReplyVo reply = new BoardReplyVo();
 		
+		//개행까지 넣어주기 위한 코드
+		String content = org.springframework.web.util.HtmlUtils.htmlEscape(replyContent);
+		replyContent = content.replaceAll("\n", "<br/>");
 		
 		//replyVo 객체에 값 담아주기
 		reply.setBoard(board);
