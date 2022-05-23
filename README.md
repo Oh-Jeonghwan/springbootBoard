@@ -103,8 +103,8 @@ spring boot devtools란?
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 # 나의 스프링 부트 설정(build.gradle, application.properties)
-	![화면 캡처 2022-05-20 160712](https://user-images.githubusercontent.com/98066327/169472889-65727a03-89ac-4d9a-bf7b-e973d5d41c3d.png)
-	![화면 캡처 2022-05-20 160738](https://user-images.githubusercontent.com/98066327/169473061-5913f5cf-78ab-4e03-b852-f4f1fe391ff2.png)
+![화면 캡처 2022-05-20 160712](https://user-images.githubusercontent.com/98066327/169472889-65727a03-89ac-4d9a-bf7b-e973d5d41c3d.png)
+![화면 캡처 2022-05-20 160738](https://user-images.githubusercontent.com/98066327/169473061-5913f5cf-78ab-4e03-b852-f4f1fe391ff2.png)
 
 # 마리아 DB 연동
 	연동을 위한 스프링 부트에서의 설정
