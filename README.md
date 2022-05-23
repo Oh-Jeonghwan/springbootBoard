@@ -385,7 +385,7 @@ spring boot devtools란?
 		
 		11. 자원들을 닫아준다.(stream들이 제대로 release 되기 위해서는 닫혀야 한다고 설명되어 있다.)
 
-#  redirect 시에 세션 값 넘기는 방법
+#  redirect 시에 변수 전달 방법
 	   - Model 인터페이스로 리다이렉트시 Map 값을 넘기려면 Model 객체는 끊어져 전달이 안 된다.
 	   - 이때 Model을 상속받고 있는 RedirectAttributes 인터페이스를 사용할 수 있는데 addAttribute와 addFlashAttribute를 사용할 수 있다.
 		-addAttribute: map 형식으로 보내준 값을 redirect 받은 메소드에서 "@RequestParam(value="키값") 자료형 변수명" 의 형태의 매개 변수로 받을 수 있다. 그리고, 이는 get 방식이므로 쿼리스트링에 나타나게 되어있다.
