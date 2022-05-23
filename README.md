@@ -250,6 +250,63 @@ spring boot devtools란?
 	  sec:authorize-sepr=”isAuthenticated()” 권한이 있어? 
 
 	-로그인 폼의 아이디랑 비밀번호 name 값이 username, password이어야 값이 넘어감
+	
+# 타임리프란?
+	서버 사이드 HTML 렌더링(SSR) : 타임리프는 백엔드 서버에서 HTML을 동적으로 렌더링하는 용도로 사용된다. 학습하기에도 어렵지 않고, 페이지가 어느정도 정적이고 빠른 생산성이 필요한 경우 백엔드 개발자가 개발해야하는 일이 생기는데 이 경우 타임리프는 좋은 선택지이다. 
+		
+		CF) SSR vs CSR
+		SSR: 서버쪽에서 렌더링 준비를 끝마친 상태로 클라이언트에 전달하는 방식이다. 
+		     한 페이지 통째로 렌더링(페이지 변환 시 같은 요소를 가지고 있어도 다시 로딩)
+		     대표: 타임리프 등등...
+		
+		CSR: 렌더링이 클라이언트 쪽에서 일어난다. 즉, 서버는 요청을 받으면 클라이언트에 HTML과 JS를 보내준다. 클라이언트는 그것을 받아 렌더링을 시작한다.
+		     화면의 부분적으로 렌더링 가능(페이지 변경 시 같은 요소를 가지고 있으면 부분만 변경) but, 관련된 파일들을 모두 렌더링 하므로 처음 로딩 시간이 느리다.
+		     캐싱이 잘 안 된다.(해당 파일이 돌아야 가능, 안 돌면 제대로 된 페이지가...)
+		     검색 엔진 최적화가 안 된다.(크롤링(웹 페이지를 그대로 가져오는 기술) 문제: 읽으들일 때 제대로 인식이 안 될 수 있다./ ssr은 렌더링이 다 되어 오기 때문에 이 부분에서 자유롭다.)
+		     대표: 자바스크립트, 리액트 등등...
+
+	네츄럴 템플릿: 타임리프는 순수한 HTML을 최대한 유지하려는 특징이 있다. 이게 JSP와의 큰 차이점으로 타임리프로 작성한 파일은 확장자도 .HTML이고 웹 브라우저에서 직접 파일을 열어도 내용을 확인할 수 있다. 물론, 이 경우 동적인 결과 렌더링은 되지 않지만 HTML 마크업 언어가 어떻게 되는지 확인할 수 있다. 
+	
+	스프링 통합 지원: 타임리프는 스프링과 자연스럽게 통합되어 스프링의 다양한 기능을 쉽게 사용할 수 있다. 
+
+        표현식
+	변수 표현식: ${...}
+	선택 변수 표현식: *{...}
+	링크 URL 표현식: @{...} 
+	메세지 표현식: #{...}
+	조각 표현식: ~{...}
+	
+	사용해본 th 태그
+	
+	타임리프 th:onclick 이용법
+	th:onclick="'location.href = \'' + @{/board/list} + '\''"
+	th:onclick="'location.href = \'' + @{/board/edit/{boardNo}(boardNo=${boardContent.boardNo})} + '\''"
+
+	th:with 그 지역 내에서 변수선언하여 변수로 사용할 수 있도록 해주는 태그 자식 요소에서는 적용가능 형제요소는 적용 불가
+	
+	th:fragment 
+	   -th:replace replace 우선 적용
+	   -th:insert
+		파라미터 전달
+		 주는 곳
+		<footer th:fragment="footerFragmentParam (param1, param2)">
+		  <p> COPYRIGHT@ dhk22</p><br/>
+		  <p th:text="${pqram1}"></p>
+		  <p th:text="${param2}"></p>
+		</footer>
+
+		=> 받는 곳
+		<div th:replace="~{/경로 :: footerFragmentParam ('everyone', 'kim')}"></div>
+		
+		 태그 직접 보내기
+		 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)">
+		 =>
+		 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
+		 태그 전달 시 문법: ~{::태그명}
+
+	th:if, th:unless = if, else
+	
+	th:action
 
 
 # 예외처리(구현하지 못 함 더 공부 필요)
@@ -373,7 +430,7 @@ spring boot devtools란?
 # JPA로 페이징하는 방법
 	Controller 단
 
-	![화면 캡처 2022-05-20 095413](https://user-images.githubusercontent.com/98066327/169475135-bd3ebef8-ea4d-4c49-9f94-bdcac67c4da7.png)
+![화면 캡처 2022-05-20 095413](https://user-images.githubusercontent.com/98066327/169475135-bd3ebef8-ea4d-4c49-9f94-bdcac67c4da7.png)
 
 	1. @PageableDefault 를 통해 한페이지의 보여줄 게시물의 개수, 정렬 기준컬럼, 정렬 방식등을 지정하고 Pegeable 객체를 만든다.
 	
@@ -387,13 +444,13 @@ spring boot devtools란?
 
 	Service 단
 
-	 ![화면 캡처 2022-05-20 101417](https://user-images.githubusercontent.com/98066327/169475283-937b31bb-20eb-4d0f-a93d-6d702b61e458.png)
+![화면 캡처 2022-05-20 101417](https://user-images.githubusercontent.com/98066327/169475283-937b31bb-20eb-4d0f-a93d-6d702b61e458.png)
 
 	  서비스단 에서는 검색 controller단 2번 에서 보내준 pageable 객체와 검색조건을 통해 조회해온다
 
 	view 단
 
-	 ![화면 캡처 2022-05-20 101635](https://user-images.githubusercontent.com/98066327/169475444-33c9aa05-7833-47dc-bd9f-c8335c02aa59.png)
+![화면 캡처 2022-05-20 101635](https://user-images.githubusercontent.com/98066327/169475444-33c9aa05-7833-47dc-bd9f-c8335c02aa59.png)
 
 	이전 버튼은 현재페이지가 1이라면 diabled, 페이지 버튼 들은 반복문 돌리고 현재페이지와 일치한다면 disabled, 다음 버튼은 현재페이지가 토탈페이지와 같다면 disabled
 	(현재 페이지는 0부터 출력되기에 page+1로 해주었고 링크 연결 시에는 다시 i-1로 해주었다.)
