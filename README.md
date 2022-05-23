@@ -218,7 +218,7 @@ spring boot devtools란?
 	@OneToMany(mappedBy = "board", cascade = {CascadeType.ALL})
 	@JsonIgnoreProperties({"board"})
 	private List<BoardReply> boardReply;
-		- @OneToMany: 팀과 팀원의 관계에 있을 때 팀의 역할을 하는 Entity에 붙여준다.(주로 primaryKey를 주는 entity로 연관관계의 주인이 아닌 경우가 많다.)
+		- @OneToMany: 팀과 팀원의 관계에 있을 때 팀의 역할을 하는 Entity에 붙여준다.(주로 primaryKey를 주는 entity로, 연관관계의 주인이 아닌 경우가 많다.)
 			- MappedBy: 연관관계의 주인이 아닌 Entity의 연관 컬럼에 붙여준다.(해당 Entity는 board 엔티티의 댓글 연관 컬럼이고, 댓글 Entity의 Board board 컬럼과 연관되어 있으며, 그 컬럼에서 primaryKey를 받는다는 뜻이다.)
 		
 			- casade: 특정 엔티티를 영속상태로 만들 때 연관된 엔티티도 함꼐 영속 상태로 만들떄 사용
@@ -252,7 +252,7 @@ spring boot devtools란?
 	-로그인 폼의 아이디랑 비밀번호 name 값이 username, password이어야 값이 넘어감
 	
 # 타임리프란?
-	서버 사이드 HTML 렌더링(SSR) : 타임리프는 백엔드 서버에서 HTML을 동적으로 렌더링하는 용도로 사용된다. 학습하기에도 어렵지 않고, 페이지가 어느정도 정적이고 빠른 생산성이 필요한 경우 백엔드 개발자가 개발해야하는 일이 생기는데 이 경우 타임리프는 좋은 선택지이다. 
+	서버 사이드 HTML 렌더링(SSR) : 타임리프는 백엔드 서버에서 HTML을 동적으로 렌더링하는 용도로 사용된다. 학습하기에도 어렵지 않고, 페이지가 어느정도 정적인 상황일 때 속도를 향상시킬 수 .
 		
 		CF) SSR vs CSR
 		SSR: 서버쪽에서 렌더링 준비를 끝마친 상태로 클라이언트에 전달하는 방식이다. 
