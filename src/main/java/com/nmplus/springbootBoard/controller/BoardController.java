@@ -98,9 +98,23 @@ public class BoardController {
 	}
 
 	@GetMapping("/insert")
-	public String insert(Model model, HttpSession session) {
+	public String insert(Model model
+					   , HttpSession session
+					   , HttpServletRequest request) {
+		
+		//글이 등록 안 됐을 때
+		Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
+		
+		String alertMsg = null;
+		if(inputFlashMap != null) {
+			alertMsg = (String)inputFlashMap.get("alertMsg");
+		}
+		
+		model.addAttribute("alertMsg",alertMsg);
+		
 		// 등록을 위해 채울 새 보드 객체를 보내준다.
 		model.addAttribute("board", new Board());
+		
 		return "board/insertForm";
 	}
 

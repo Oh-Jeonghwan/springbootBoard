@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import com.nmplus.springbootBoard.controller.BoardController;
 import com.nmplus.springbootBoard.repository.BoardRepository;
@@ -42,12 +43,6 @@ public class BoardService {
 	}
 	
 	public Board saveBoard(Board board) {
-		
-		String content = org.springframework.web.util.HtmlUtils.htmlEscape(board.getBoardContent());
-		String boardContent = content.replaceAll("\n", "<br>");
-		
-		board.setBoardContent(boardContent);
-		log.debug("Asdf"+board.getBoardContent());
 		return boardRepository.save(board);
 	}
 	

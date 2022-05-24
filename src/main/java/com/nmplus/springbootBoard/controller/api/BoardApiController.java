@@ -52,6 +52,7 @@ public class BoardApiController {
 
 	@PostMapping("/insert")
 	public String insert(Model model
+					   , RedirectAttributes redirect
 					   , @ModelAttribute Board board
 					   , @ModelAttribute UploadVo uploadVo
 					   , @AuthenticationPrincipal PrincipalDetail principal) throws MaxUploadSizeExceededException {
@@ -60,7 +61,7 @@ public class BoardApiController {
 		Board result = boardService.saveBoard(board);
 
 		if (result == null) {
-			model.addAttribute("message", "글 등록에 실패했습니다.");
+			redirect.addFlashAttribute("alertMsg", "글 등록에 실패했습니다.");
 			return "redirect:/board/insert";
 		} else {
 			if (uploadVo.isFileExist()) {
@@ -69,16 +70,15 @@ public class BoardApiController {
 				attachmentService.insertAtt(uploadVo, result);
 			}
 			// 첨부파일 등록 후
-			model.addAttribute("message", "글이 등록되었습니다.");
+			redirect.addFlashAttribute("alertMsg", "글이 등록되었습니다.");
 			return "redirect:/board/list";
 		}
 	}
 
 	@PutMapping("/edit/{boardNo}")
 	@ResponseBody
-	public int boardEdit(Model model
-						  , @ModelAttribute Board board
-						  , @ModelAttribute UploadVo uploadVo) {
+	public int boardEdit(@ModelAttribute Board board
+					   , @ModelAttribute UploadVo uploadVo) {
 		
 		//변경할 객체 불러오기
 		Board boardSelect = boardService.findById(board.getBoardNo());
@@ -94,7 +94,6 @@ public class BoardApiController {
 		Board boardUpdate = boardService.saveBoard(boardCopy);
 		
 		if(boardUpdate==null) {
-			model.addAttribute("message", "글 등록에 실패했습니다.");
 			return 0;//"redirect:/board/edit/" + board.getBoardNo();
 		}else {
 			if(uploadVo.isFileExist()) {
@@ -106,8 +105,6 @@ public class BoardApiController {
 			}else {
 				attachmentService.attachmentDelete(boardUpdate);
 			}
-			
-			model.addAttribute("message", "글이 등록되었습니다.");
 			return 1;//"redirect:/board/content/" + board.getBoardNo();
 		}
 	
