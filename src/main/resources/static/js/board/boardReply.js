@@ -1,6 +1,5 @@
-/**
- * 
- */
+'use strict';
+
 let boardReply = {
 	replyInsert: function (e) {
 		//함수의 매개변수로 문자나 숫자는 받아주지만 객체 등 다른 형태의 자료는 못 받아준다.
@@ -32,9 +31,10 @@ let boardReply = {
 							},
 							success: function (list) {
 								if (list != null) {
+									
 									let result = "";
 									for (let i in list) {//for in 문
-										replyNo = list[i].replyNo;
+										let replyNo = list[i].replyNo;
 										result += "<tr>"
 											+ "<td>" + list[i].replyWriter + "</td>"
 											+ "<td>" + list[i].replyContent + "</td>"
@@ -77,7 +77,7 @@ let boardReply = {
 				if (list != null) {
 					let result = "";
 					for (let i in list) {//for in 문
-						replyNo = list[i].replyNo;
+						let replyNo = list[i].replyNo;
 						result += "<tr>"
 							+ "<td>" + list[i].replyWriter + "</td>"
 							+ "<td>" + list[i].replyContent + "</td>"
@@ -119,7 +119,7 @@ let boardReply = {
 							if (list != null) {
 								let result = "";
 								for (let i in list) {//for in 문
-									replyNo = list[i].replyNo;
+									let replyNo = list[i].replyNo;
 									result += "<tr>"
 										+ "<td>" + list[i].replyWriter + "</td>"
 										+ "<td>" + list[i].replyContent + "</td>"
@@ -150,7 +150,14 @@ let boardReply = {
 			}
 		});
 	}
-
-
-
 }
+
+$(function () {
+    var token = $("meta[name='_csrf']").attr('content');
+    var header = $("meta[name='_csrf_header']").attr('content');
+    if(token && header) {
+        $(document).ajaxSend(function(event, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    }
+});

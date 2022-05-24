@@ -1,6 +1,5 @@
-/**
- * 
- */
+'use strict';
+
 //파일 다운로드를 위한 ajax
 let board = {
 	download: function(e){
@@ -82,3 +81,14 @@ let index = {
 		}
 	}
 index.init();
+
+$(function () {
+    var token = $("meta[name='_csrf']").attr('content');
+    var header = $("meta[name='_csrf_header']").attr('content');
+    if(token && header) {
+        $(document).ajaxSend(function(event, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    }
+});
+

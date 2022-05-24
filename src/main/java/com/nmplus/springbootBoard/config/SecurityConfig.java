@@ -3,12 +3,14 @@ package com.nmplus.springbootBoard.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.nmplus.springbootBoard.config.auth.PrincipalDetailService;
 
@@ -36,20 +38,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		auth.userDetailsService(principalDetailService).passwordEncoder(encodePwd());
 	}
 	
+	@Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.csrf().disable() //csrf토큰 비활성화(테스트 시에만) => 자바스크립트로 토큰 어떻게 주는지 알아보고 활성화 
+			//.csrf().disable() //csrf토큰 비활성화(테스트 시에만) => 자바스크립트로 토큰 어떻게 주는지 알아보고 활성화 
 			.authorizeRequests() //요청이 들어오면 
-				.antMatchers("/auth/**","/js/**", "/css/**", "/image/**","/board/list","/") // /이런 파일들은
+				.antMatchers("/auth/**","/js/**", "/css/**", "/image/**","/board/list","/","/logout") // /이런 파일들은
 				.permitAll() //누구나 가능
 				.anyRequest() //그 외에 다른 인증은
 				.authenticated() //인증을 받아야 해 
 			.and()
 				.formLogin() //로그인 페이지는
 				.loginPage("/auth/loginForm") //우리가 지정한 페이지로
-				.loginProcessingUrl("/auth/loginProc") //스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로챈다.		
+				.loginProcessingUrl("/auth/loginProc") //스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로챈다.
 				.defaultSuccessUrl("/")
-				.failureUrl("/auth/loginForm");//로그인 성공 또는 실패 시 메시지를 띄울 수 있는지 알아보자
+				.failureUrl("/auth/loginForm")//로그인 성공 또는 실패 시 메시지를 띄울 수 있는지 알아보자
+            .and()
+            	.logout().permitAll();
 	}			
 }
