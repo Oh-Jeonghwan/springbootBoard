@@ -63,8 +63,6 @@
                     <li><a th:href="@{/auth/joinForm}">회원가입</a></li>
                     <span>&nbsp;|&nbsp;</span>
                     <li><a href="#" data-toggle="modal" data-target="#findId">아이디 찾기</a></li>
-                    <span>&nbsp;|&nbsp;</span>
-                    <li><a href="#" data-toggle="modal" data-target="#findPwd">비밀번호 찾기</a></li>
                 </ul>
             </div>
         </main>
@@ -87,31 +85,6 @@
                                 </div>
                             </div>
                             <button class="btn btn-success">찾기</button>
-                            <button type="button" class="btn btn-emergency" data-dismiss="modal">닫기</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 비밀번호 찾기 팝업 -->
-        <div class="modal" id="findPwd">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <p>비밀번호 찾기</p>
-                    </div>
-                    <div class="modal-body">
-                        <form th:action="@{#}" method="post">
-                            <div class="form-group">
-                                <div class="form-floating m-3">
-                                    <input type="text" name="memberName" placeholder="이름을 입력해 주세요."><br>
-                                </div>
-                                <div class="form-floating m-3">
-                                    <input type="text" name="email" placeholder="email을 입력해 주세요."><br>
-                                </div>
-                            </div>
-                            <button class="btn btn-success">이메일로 인정번호 보내기</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
                         </form>
                     </div>
