@@ -1,5 +1,6 @@
 'use strict';
 
+let submitFlag = false;
 //파일 다운로드를 위한 ajax
 let board = {
 	download: function(e){
@@ -18,7 +19,7 @@ let board = {
 	contentEdit:function(e){
 		let url = $("#form").attr("action"); 
 		let form = $('#form')[0]; 
-		let formData = new FormData(form);
+		let formData = new FormData(form); //FormData: 폼에 있는 데이터를 들고 오는 듯
 		$.ajax({ 
 			url: url, 
 			type: 'put', 
@@ -43,7 +44,26 @@ let board = {
 			contentType: false, 
 			processData: false 
 		});
-	},	
+	},
+	
+	clickSubmit : function(){
+		if(submitCheck()){return;}
+		document.getElementById('form').submit();
+	},
+	
+	clickEdit:function(e){
+		if(submitCheck()){return;}
+		contentEdit(e);
+	},
+	
+	submitCheck : function(){
+		if(submitFlag){
+			return submitFlag;
+		}else{
+			submitFlag = true;
+			return false;
+		}
+	}
 }
 
 let index = {

@@ -19,7 +19,7 @@
     </nav>
     <div class="outer container">
         <h2>게시글 등록</h2>
-        <form th:action="@{/board/api/insert}" th:object="${board}" method="post" enctype="multipart/form-data">
+        <form id="form" th:action="@{/board/api/insert}" th:object="${board}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="boardTitle">제목</label>
                 <input type="text" class="form-control" id="boardTitle" th:field="*{boardTitle}" required>
@@ -38,7 +38,7 @@
                 <!-- 로그인이랑 작성자 안 맞으면 비활성화 -->
                 <a type="button" class="btn btn-primary" th:href="@{/board/list}">취소</a>
 
-                <button class="btn btn-primary">등록</button>
+                <button class="btn btn-primary" th:onclick="javascript:board.clickSubmit();">등록</button>
             </div>
         </form>
         <br><br><br><br>
