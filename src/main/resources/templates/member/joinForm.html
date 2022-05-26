@@ -8,7 +8,6 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
     </nav>
-
     <div class="outer container">
         <main class="form-signin">
             <form id="joinForm" novalidate>
@@ -58,7 +57,7 @@
                         <input type="text" class="form-control" name="phone" id="phone" required style="width:300px" placeholder="'-' 제외 최대  11자" pattern="^010[0-9]{3,4}[0-9]{4}$">
                         <span id="phCheck"></span>
                         <div class="valid-feedback">good!</div>
-                        <div class="invalid-feedback">이메일 형식을 확인해주세요.</div>
+                        <div class="invalid-feedback">핸드폰 번호를 확인해주세요.</div>
                     </div>
                 </div>
             </form>

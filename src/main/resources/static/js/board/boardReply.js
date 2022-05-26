@@ -1,7 +1,7 @@
 'use strict';
 
 let boardReply = {
-	replyInsert: function (e) {
+	replyPost: function (e) {
 		//함수의 매개변수로 문자나 숫자는 받아주지만 객체 등 다른 형태의 자료는 못 받아준다.
 		let replyContent = $("#replyContent").val()
 
@@ -14,7 +14,7 @@ let boardReply = {
 		else {
 			$.ajax({
 				type: "post",
-				url: "/board/api/replyInsert",
+				url: "/board/api/replyPost",
 				data: {
 					replyContent: replyContent,
 					boardNo: e

@@ -6,7 +6,7 @@ let index = {
 		$("#btn-memberUpdate").on("click", ()=>{
 			let form = document.querySelector("#updateForm");
             if (form.checkValidity() == false) {
-                console.log("회원가입 안됨")
+                console.log("회원수정 안됨")
             } else {						
 				this.memberEdit();
 			}

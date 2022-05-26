@@ -35,7 +35,6 @@ let index = {
 			email: $("#email").val(),// 이메일
 			phone: $("#phone").val()// 핸드폰
 		};
-
 		// ajax 통신을 이용해서 3개의 데이터를 jason으로 변경하여 insert 요청
 		// ajax호출시 default가 비동기 호출
 		$.ajax({// 회원가입 수행요청
@@ -79,7 +78,6 @@ let index = {
                 	},
                 type: "get",
                 success: function(result) {
-					console.log(result);
                     if (result == 1) {
                         $("#idResult").text("중복된 아이디 입니다.");
                         $("#idResult").css('color', 'red');

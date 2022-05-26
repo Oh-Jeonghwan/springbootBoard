@@ -148,7 +148,7 @@ public class BoardController {
 	}
 
 	// 게시글 수정 폼 띄워주는 메소드
-	@GetMapping("/edit/{boardNo}")
+	@GetMapping("/post/{boardNo}")
 	public String boardEdit(Model model
 						  , RedirectAttributes redirect
 						  , @PathVariable Long boardNo

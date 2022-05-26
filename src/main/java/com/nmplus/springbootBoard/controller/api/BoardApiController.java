@@ -50,7 +50,7 @@ public class BoardApiController {
 	@Autowired
 	private BoardReplyService boardReplyService;
 
-	@PostMapping("/insert")
+	@PostMapping("/post")
 	public String insert(Model model
 					   , RedirectAttributes redirect
 					   , @ModelAttribute Board board
@@ -75,11 +75,12 @@ public class BoardApiController {
 		}
 	}
 
-	@PutMapping("/edit/{boardNo}")
+	@PutMapping("/put/{boardNo}")
 	@ResponseBody
-	public int boardEdit(@ModelAttribute Board board
-					   , @ModelAttribute UploadVo uploadVo) {
+	public int boardEdit(@RequestParam Board board
+					   , @RequestParam UploadVo uploadVo) {
 		
+		log.debug("ㄷㄷㄷㄷ: "+board);
 		//변경할 객체 불러오기
 		Board boardSelect = boardService.findById(board.getBoardNo());
 		
@@ -151,12 +152,11 @@ public class BoardApiController {
 					   , @RequestParam Long attNo) throws Exception {
 		// ResponseEntity<Resource>
 		ResponseEntity<Resource> asdf = attachmentService.download(response, request, attNo);
-		log.debug("뭐가 나오냐?"+asdf);
 		return asdf;
 	}
 
 	@ResponseBody
-	@PostMapping("/replyInsert")
+	@PostMapping("/replyPost")
 	public BoardReplyVo replyInsert(@RequestParam Long boardNo
 								  , @RequestParam String replyContent
 								  , @AuthenticationPrincipal PrincipalDetail principal) {

@@ -19,7 +19,7 @@
     </nav>
     <div class="outer container">
         <h2>게시글 등록</h2>
-        <form id="form" th:action="@{/board/api/insert}" th:object="${board}" method="post" enctype="multipart/form-data">
+        <form id="form" th:action="@{/board/api/post}" th:object="${board}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="boardTitle">제목</label>
                 <input type="text" class="form-control" id="boardTitle" th:field="*{boardTitle}" required>

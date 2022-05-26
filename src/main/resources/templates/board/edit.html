@@ -19,7 +19,7 @@
     </nav>
     <div class="outer container">
         <h2>게시글 수정</h2>
-        <form th:action="@{/board/api/edit/{boardNo}(boardNo=${board.boardNo})}" th:object="${board}" id="form" class="form-horiaontal" enctype="multipart/form-data">
+        <form th:action="@{/board/api/put/{boardNo}(boardNo=${board.boardNo})}" th:object="${board}" id="form" class="form-horiaontal" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label for="boardTitle">제목</label>

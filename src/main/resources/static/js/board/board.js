@@ -18,9 +18,8 @@ let board = {
 	
 	contentEdit:function(e){
 		let url = $("#form").attr("action"); 
-		let form = $('#form')[0]; 
+		let form = $('#form')[0];
 		let formData = new FormData(form); //FormData: 폼에 있는 데이터를 들고 오는 듯
-		console.log(formData);
 		$.ajax({ 
 			url: url, 
 			type: 'put', 
