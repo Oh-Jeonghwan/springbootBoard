@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,19 +24,19 @@ public class MemberApiController {
 	private MemberService memberService;
 	
 	
-	@PostMapping("/auth/joinProc")
+	@PostMapping("/auth/join")
 	@ResponseBody
 	public Member join(@RequestBody Member member) {
 		return memberService.save(member);
 	}
 	
-	@PostMapping("/auth/idCheck")
+	@GetMapping("/auth/idCheck")
 	@ResponseBody
 	public int idCheck(@RequestParam String id) {
 		return memberService.idCheck(id);
 	}
 
-	@PostMapping("/auth/emailCheck")
+	@GetMapping("/auth/emailCheck")
 	@ResponseBody
 	public int emailCheck(@RequestParam String email) {
 		return memberService.emailCheck(email);

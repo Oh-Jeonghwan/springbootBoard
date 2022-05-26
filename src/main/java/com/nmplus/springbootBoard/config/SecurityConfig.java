@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http
 			//.csrf().disable() //csrf토큰 비활성화(테스트 시에만) => 자바스크립트로 토큰 어떻게 주는지 알아보고 활성화 
 			.authorizeRequests() //요청이 들어오면 
-				.antMatchers("/auth/**","/js/**", "/css/**", "/image/**","/board/list","/","/logout") // /이런 파일들은
+				.antMatchers("/auth/**","/js/**", "/css/**","/board/list","/","/logout") // /이런 파일들은
 				.permitAll() //누구나 가능
 				.anyRequest() //그 외에 다른 인증은
 				.authenticated() //인증을 받아야 해 
@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.loginProcessingUrl("/auth/loginProc") //스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로챈다.
 				.defaultSuccessUrl("/")
 				.failureUrl("/auth/loginForm")//로그인 성공 또는 실패 시 메시지를 띄울 수 있는지 알아보자
+				.permitAll()
             .and()
             	.logout().permitAll();
 	}			
