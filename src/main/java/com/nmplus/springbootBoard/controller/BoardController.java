@@ -97,8 +97,8 @@ public class BoardController {
 		return "board/list";
 	}
 
-	@GetMapping("/insert")
-	public String insert(Model model
+	@GetMapping("/post")
+	public String boardPost(Model model
 					   , HttpSession session
 					   , HttpServletRequest request) {
 		
@@ -148,7 +148,7 @@ public class BoardController {
 	}
 
 	// 게시글 수정 폼 띄워주는 메소드
-	@GetMapping("/post/{boardNo}")
+	@GetMapping("/put/{boardNo}")
 	public String boardEdit(Model model
 						  , RedirectAttributes redirect
 						  , @PathVariable Long boardNo

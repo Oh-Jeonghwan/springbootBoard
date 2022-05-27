@@ -40,9 +40,9 @@ let index = {
 		$.ajax({// 회원가입 수행요청
 			type: "post",
 			url: "/auth/join",
-			data: JSON.stringify(data), // http body 데이터
-			contentType: "application/json; charset=utf-8", // body 데이터가 어떤 타입인지(MIME)
-			dataType: "json" // 요청을 서버로 해서 응답이 왔을 때 기본적으로 모든 것이 문자열(생긴 것이 json이라면 )
+			data: JSON.stringify(data)//, // http body 데이터
+			//contentType: "application/json; charset=utf-8", // body 데이터가 어떤 타입인지(MIME)
+			//dataType: "json" // 요청을 서버로 해서 응답이 왔을 때 기본적으로 모든 것이 문자열(생긴 것이 json이라면 )
 								//=>javascript object로 변경
 		}).done(function (resp) {// 성공했을 때
 			if (resp == null) {

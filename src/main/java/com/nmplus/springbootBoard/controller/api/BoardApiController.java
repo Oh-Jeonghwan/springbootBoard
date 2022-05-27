@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -75,14 +75,13 @@ public class BoardApiController {
 		}
 	}
 
-	@PutMapping("/put/{boardNo}")
+	@PostMapping("/put/{boardNo}")
 	@ResponseBody
-	public int boardEdit(@RequestParam Board board
-					   , @RequestParam UploadVo uploadVo) {
-		
-		log.debug("ㄷㄷㄷㄷ: "+board);
+	public int boardEdit(@PathVariable Long boardNo
+					   , @ModelAttribute Board board
+					   , @ModelAttribute UploadVo uploadVo) {
 		//변경할 객체 불러오기
-		Board boardSelect = boardService.findById(board.getBoardNo());
+		Board boardSelect = boardService.findById(boardNo);
 		
 		// 불러온 객체를 바꾸지 않기 위해 새로운 객체를 만들어 복사하여 실행
 		Board boardCopy = new Board();
@@ -157,9 +156,9 @@ public class BoardApiController {
 
 	@ResponseBody
 	@PostMapping("/replyPost")
-	public BoardReplyVo replyInsert(@RequestParam Long boardNo
-								  , @RequestParam String replyContent
-								  , @AuthenticationPrincipal PrincipalDetail principal) {
+	public BoardReplyVo replyPost(@RequestParam Long boardNo
+								, @RequestParam String replyContent
+								, @AuthenticationPrincipal PrincipalDetail principal) {
 		
 		BoardReplyVo reply = boardReplyService.replyInsert(boardNo, replyContent, principal);
 
@@ -167,14 +166,14 @@ public class BoardApiController {
 	}
 
 	@ResponseBody
-	@PostMapping("/replyList")
+	@GetMapping("/replyList")
 	public List<BoardReplyVo> replyList(@RequestParam Long boardNo) {
 		List<BoardReplyVo> replyList = boardReplyService.replyList(boardNo);
 		return replyList;
 	}
 
 	@ResponseBody
-	@PutMapping("/replyDelete")
+	@GetMapping("/replyDelete")
 	public int replyDelete(Principal principal
 						 , @RequestParam Long replyNo) {
 		

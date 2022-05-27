@@ -28,7 +28,6 @@ public class MemberApiController {
 	@PostMapping("/auth/join")
 	@ResponseBody
 	public Member join(@RequestBody Member member) {
-		log.debug("skd: "+ member);
 		return memberService.save(member);
 	}
 	
@@ -44,7 +43,7 @@ public class MemberApiController {
 		return memberService.emailCheck(email);
 	}
 	
-	@PutMapping("/user/memberEdit")
+	@PutMapping("/user/put")
 	@ResponseBody
 	public int memberEdit (@RequestBody Member member
 							, Principal principal) {

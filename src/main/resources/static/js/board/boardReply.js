@@ -3,8 +3,7 @@
 let boardReply = {
 	replyPost: function (e) {
 		//함수의 매개변수로 문자나 숫자는 받아주지만 객체 등 다른 형태의 자료는 못 받아준다.
-		let replyContent = $("#replyContent").val()
-
+		let replyContent = $("#replyContent").val();
 		//텍스트area 내의 공백(\s) 또는(|) 문자열의 모든 문자(g)
 		//대소문자를 무시(i)하고 공백("")을 제거하여 그 길이가 0이면 
 		if (replyContent.replace(/\s| /gi, "").length == 0) {
@@ -15,23 +14,22 @@ let boardReply = {
 			$.ajax({
 				type: "post",
 				url: "/board/api/replyPost",
-				data: {
-					replyContent: replyContent,
+				data:{
+					replyContent:replyContent,
 					boardNo: e
 				},
-
 				success: function (result) {
 					$("#replyContent").val("");
 					if (result != null) {
 						$.ajax({
-							type: "post",
+							type: "get",
 							url: "/board/api/replyList",
 							data: {
 								boardNo: e
 							},
+							contentType: 'application/json',
 							success: function (list) {
 								if (list != null) {
-									
 									let result = "";
 									for (let i in list) {//for in 문
 										let replyNo = list[i].replyNo;
@@ -68,11 +66,12 @@ let boardReply = {
 	
 	replyList: function (e) {
 		$.ajax({
-			type: "post",
+			type: "get",
 			url: "/board/api/replyList",
 			data: {
 				boardNo: e
 			},
+			contentType: 'application/json',
 			success: function (list) {
 				if (list != null) {
 					let result = "";
@@ -102,7 +101,7 @@ let boardReply = {
 	
 	replyDelete: function(e, f){
 		$.ajax({
-			type:"put",
+			type:"get",
 			url: "/board/api/replyDelete",
 			data:{replyNo: e},
 			success: function(data){
@@ -110,11 +109,12 @@ let boardReply = {
 					alert("댓글이 삭제되었습니다.");
 					
 					$.ajax({
-						type: "post",
+						type: "get",
 						url: "/board/api/replyList",
 						data: {
 							boardNo: f
 						},
+						contentType: 'application/json',
 						success: function (list) {
 							if (list != null) {
 								let result = "";

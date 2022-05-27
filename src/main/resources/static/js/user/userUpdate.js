@@ -23,7 +23,7 @@ let index = {
 		// ajax호출시 default가 비동기 호출
 		$.ajax({// 회원가입 수행요청
 			type: "put",
-			url: "/user/memberEdit",
+			url: "/user/put",
 			data: JSON.stringify(data), // http body 데이터
 			contentType: "application/json; charset=utf-8", // body 데이터가 어떤 타입인지(MIME)
 			dataType: "json" // 요청을 서버로 해서 응답이 왔을 때 기본적으로 모든 것이 문자열

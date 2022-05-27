@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
 import com.nmplus.springbootBoard.controller.BoardController;
+import com.nmplus.springbootBoard.repository.AttachmentRepository;
 import com.nmplus.springbootBoard.repository.BoardRepository;
 import com.nmplus.springbootBoard.vo.Board;
+import com.nmplus.springbootBoard.vo.UploadVo;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -18,6 +20,13 @@ public class BoardService {
 	
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	@Autowired
+	private AttachmentService attachmentService;
+	
+	private int isOK = 1;
+	
+	private int isNO = 0;
 	
 	public Page<Board> selectList(Pageable pageable
 								, String condition
@@ -59,7 +68,5 @@ public class BoardService {
 	public Board findById(Long boardNo) {
 		return boardRepository.findByBoardNo(boardNo);
 	}
-
-	
 	
 }

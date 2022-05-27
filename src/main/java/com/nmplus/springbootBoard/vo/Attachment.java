@@ -33,7 +33,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @DynamicInsert
-@ToString
 public class Attachment {
 	
 	@Id //pk라는 것을 알려주d기 위한 어노테이션

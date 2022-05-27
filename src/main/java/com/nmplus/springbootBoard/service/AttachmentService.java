@@ -36,9 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AttachmentService {
-	
-	@Autowired
-	private ResourceLoader resourceLoader;
 
 	@Autowired
 	private AttachmentRepository attachmentRepository;
@@ -220,10 +217,8 @@ public class AttachmentService {
 		
 		if(!delete.isEmpty()) {
 			for(int i=0; i<delete.size(); i++) {
-				Attachment deleteVo = new Attachment();
-				BeanUtils.copyProperties(delete.get(i), deleteVo);
-				deleteVo.setStatus("N");
-				Attachment result = attachmentRepository.save(deleteVo);
+				delete.get(i).setStatus("N");
+				attachmentRepository.save(delete.get(i));
 			}
 		}
 		

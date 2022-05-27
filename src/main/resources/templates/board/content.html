@@ -47,7 +47,7 @@
         <div class="button btn-group">
             <button class="btn btn-primary" type="button" th:onclick="'location.href = \'' + @{/board/list} + '\''">목록가기</button>
             <!-- 서브밋이 아닌 기본 버튼을 통한 유알엘 이동은 get 방식으로 넘어감 서블릿에서 get매핑으로 -->
-            <button class="btn btn-success" type="button" id="edit" th:onclick="'location.href = \'' + @{/board/post/{boardNo}(boardNo=${boardContent.boardNo})} + '\''">수정하기</button>
+            <button class="btn btn-success" type="button" id="edit" th:onclick="'location.href = \'' + @{/board/put/{boardNo}(boardNo=${boardContent.boardNo})} + '\''">수정하기</button>
             <button class="btn btn-danger" type="button" id="delete" th:onclick="'location.href = \'' + @{/board/api/delete/{boardNo}(boardNo=${boardContent.boardNo})} + '\''">삭제하기</button>
         </div>
         <br><br><br>

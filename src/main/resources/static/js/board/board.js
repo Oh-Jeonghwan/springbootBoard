@@ -22,7 +22,7 @@ let board = {
 		let formData = new FormData(form); //FormData: 폼에 있는 데이터를 들고 오는 듯
 		$.ajax({ 
 			url: url, 
-			type: 'put', 
+			type: 'post', 
 			data: formData,
 			//contentType: "application/json; charset=utf-8", // body 데이터가 어떤
 															// 타입인지(MIME)
