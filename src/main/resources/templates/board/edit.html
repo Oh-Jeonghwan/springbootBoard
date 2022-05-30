@@ -19,8 +19,8 @@
     </nav>
     <div class="outer container">
         <h2>게시글 수정</h2>
-        <form th:action="@{/board/api/put/{boardNo}(boardNo=${board.boardNo})}" th:object="${board}" id="form" class="form-horiaontal" enctype="multipart/form-data">
-
+        <form th:action="@{/board/api/put/{boardNo}(boardNo=${board.boardNo})}" th:object="${board}" id="form" class="form-horiaontal">
+		
             <div class="form-group">
                 <label for="boardTitle">제목</label>
                 <input type="text" class="form-control" id="boardTitle" name="*{boardTitle}" th:field="*{boardTitle}">
@@ -29,12 +29,14 @@
                 <label for="boardContent">글 내용</label>
                 <textarea class="form-control" id="boardContent" rows="20" name="*{boardContent}" th:field="*{boardContent}"></textarea>
             </div>
+
             <div class="form-group row">
                 <label for="inputFile" class="col-sm-2 col-form-label"><strong>첨부 파일</strong></label>
                 <div class="mb-3">
                     <input class="form-control upfile" type="file" id="formFileMultiple" name="upfile" multiple>
                 </div>
             </div>
+
             <div class="text-right">
                 <a type="button" class="btn btn-primary" th:href="@{/board/content/{boardNo}(boardNo=*{boardNo})}">취소</a>
 

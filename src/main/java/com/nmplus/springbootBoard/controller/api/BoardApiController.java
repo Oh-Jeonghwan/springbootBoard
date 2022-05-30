@@ -75,9 +75,9 @@ public class BoardApiController {
 		}
 	}
 
-	@PostMapping("/put/{boardNo}")
+	@PutMapping("/put/{boardNo}")
 	@ResponseBody
-	public int boardEdit(@PathVariable Long boardNo
+	public int boardPut(@PathVariable Long boardNo
 					   , @ModelAttribute Board board
 					   , @ModelAttribute UploadVo uploadVo) {
 		//변경할 객체 불러오기
@@ -152,14 +152,12 @@ public class BoardApiController {
 
 	@ResponseBody
 	@PostMapping("/replyPost")
-	public BoardReplyVo replyPost(@RequestParam Long boardNo
-								, @RequestParam String replyContent
+	public BoardReplyVo replyPost(@RequestBody Long boardNo
+								, @RequestBody String replyContent
 								, @AuthenticationPrincipal PrincipalDetail principal) {
-		
 		BoardReplyVo reply = boardReplyService.replyInsert(boardNo, replyContent, principal);
-
 		return reply;
-	}
+	} 
 
 	@ResponseBody
 	@GetMapping("/replyList")

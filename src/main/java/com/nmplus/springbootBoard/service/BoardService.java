@@ -21,13 +21,6 @@ public class BoardService {
 	@Autowired
 	private BoardRepository boardRepository;
 	
-	@Autowired
-	private AttachmentService attachmentService;
-	
-	private int isOK = 1;
-	
-	private int isNO = 0;
-	
 	public Page<Board> selectList(Pageable pageable
 								, String condition
 								, String keyword) {

@@ -3,26 +3,13 @@
 let submitFlag = false;
 //파일 다운로드를 위한 ajax
 let board = {
-	download: function(e){
-		$.ajax({
-			type:"post",
-			url: "/board/api/download",
-			data: {attNo: e},
-			success: function(){
-			},
-			error: function(e){
-				console.log("att 다운로드 실패");
-			}
-		});
-	},
-	
 	contentEdit:function(e){
 		let url = $("#form").attr("action"); 
 		let form = $('#form')[0];
 		let formData = new FormData(form); //FormData: 폼에 있는 데이터를 들고 오는 듯
 		$.ajax({ 
 			url: url, 
-			type: 'post', 
+			type: 'put', 
 			data: formData,
 			//contentType: "application/json; charset=utf-8", // body 데이터가 어떤
 															// 타입인지(MIME)
