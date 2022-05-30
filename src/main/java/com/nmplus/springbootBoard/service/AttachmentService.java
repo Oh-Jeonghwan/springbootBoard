@@ -71,9 +71,7 @@ public class AttachmentService {
 
 	}
 
-	public ResponseEntity<Resource> download(HttpServletResponse response
-					   , HttpServletRequest request
-					   , Long attNo) throws Exception{
+	public ResponseEntity<Resource> download(Long attNo) throws Exception{
 		
 		//httpServletResponse, httpServleRequest(반환값 없음), ResponseEntity<Resource>(반환값 있음)
 		

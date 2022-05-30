@@ -39,7 +39,7 @@
             <div class="attchment" th:each="attachment:${attachment}">
                 <div th:each="attachment:${attachment}">
                     <span th:text="${attachment.originFilename}"></span>
-                    <a class="btn btn-success download" th:onclick="'javascript:board.download('+ ${attachment.fileNo} +');'">다운로드</a>
+                    <a class="btn btn-success download" th:onclick="'location.href=\''+@{/board/api/download/{attNo}(attNo=${attachment.fileNo})}+'\''">다운로드</a>
                 </div>
             </div>
         </fieldset>

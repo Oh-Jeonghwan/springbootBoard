@@ -144,14 +144,10 @@ public class BoardApiController {
 		}
 	}
 
-	@ResponseBody
-	@PostMapping("/download")
-	public ResponseEntity<Resource> download(HttpServletResponse response
-					   , HttpServletRequest request
-					   , @RequestParam Long attNo) throws Exception {
-		// ResponseEntity<Resource>
-		ResponseEntity<Resource> asdf = attachmentService.download(response, request, attNo);
-		return asdf;
+	@GetMapping("/download/{attNo}")
+	public ResponseEntity<Resource> download(@PathVariable Long attNo) throws Exception {
+		ResponseEntity<Resource> downloadFile = attachmentService.download(attNo);
+		return downloadFile;
 	}
 
 	@ResponseBody

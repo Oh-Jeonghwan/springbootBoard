@@ -1,5 +1,5 @@
 'use strict';
-
+//중복클릭 방지를 위한 변수
 let submitFlag = false;
 //파일 다운로드를 위한 ajax
 let board = {
