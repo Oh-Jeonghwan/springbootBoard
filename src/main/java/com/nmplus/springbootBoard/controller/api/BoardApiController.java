@@ -3,9 +3,6 @@ package com.nmplus.springbootBoard.controller.api;
 import java.security.Principal;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -152,8 +149,8 @@ public class BoardApiController {
 
 	@ResponseBody
 	@PostMapping("/replyPost")
-	public BoardReplyVo replyPost(@RequestBody Long boardNo
-								, @RequestBody String replyContent
+	public BoardReplyVo replyPost(@RequestParam Long boardNo
+								, @RequestParam String replyContent
 								, @AuthenticationPrincipal PrincipalDetail principal) {
 		BoardReplyVo reply = boardReplyService.replyInsert(boardNo, replyContent, principal);
 		return reply;

@@ -1,8 +1,6 @@
 package com.nmplus.springbootBoard.vo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.EntityListeners;
 
@@ -10,7 +8,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.nmplus.springbootBoard.entity.BoardReply;
-import com.nmplus.springbootBoard.service.BoardReplyService;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

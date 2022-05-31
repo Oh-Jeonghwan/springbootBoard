@@ -1,34 +1,22 @@
 package com.nmplus.springbootBoard.service;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriUtils;
 
-import com.nmplus.springbootBoard.entity.BoardReply;
 import com.nmplus.springbootBoard.repository.AttachmentRepository;
 import com.nmplus.springbootBoard.vo.Attachment;
 import com.nmplus.springbootBoard.vo.Board;
-import com.nmplus.springbootBoard.vo.BoardReplyVo;
 import com.nmplus.springbootBoard.vo.UploadVo;
 
 import lombok.extern.slf4j.Slf4j;

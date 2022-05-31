@@ -109,7 +109,7 @@ public class BoardReplyService {
 				BoardReplyVo deleteVo = new BoardReplyVo();
 				BeanUtils.copyProperties(delete.get(i), deleteVo);
 				deleteVo.setStatus("N");
-				BoardReply result = boardReplyRepository.save(deleteVo.toEntity());
+				boardReplyRepository.save(deleteVo.toEntity());
 			}
 		}
 	}

@@ -1,17 +1,12 @@
 package com.nmplus.springbootBoard.service;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.HtmlUtils;
 
-import com.nmplus.springbootBoard.controller.BoardController;
-import com.nmplus.springbootBoard.repository.AttachmentRepository;
 import com.nmplus.springbootBoard.repository.BoardRepository;
 import com.nmplus.springbootBoard.vo.Board;
-import com.nmplus.springbootBoard.vo.UploadVo;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j

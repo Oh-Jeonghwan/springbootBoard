@@ -18,13 +18,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity //데이터 베이스 연동을 위한 모델 클래스라는 것을 알려주는 어노테이션
 @Getter

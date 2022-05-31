@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 				.formLogin() //로그인 페이지는
 				.loginPage("/auth/loginForm") //우리가 지정한 페이지로
-				.loginProcessingUrl("/auth/loginProc") //스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로챈다.
+				.loginProcessingUrl("/auth/loginProc") //스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로챈다.\
 				.defaultSuccessUrl("/")
 				.failureUrl("/auth/loginForm")//로그인 성공 또는 실패 시 메시지를 띄울 수 있는지 알아보자
 				.permitAll()

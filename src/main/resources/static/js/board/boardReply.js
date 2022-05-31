@@ -14,11 +14,10 @@ let boardReply = {
 			$.ajax({
 				type: "post",
 				url: "/board/api/replyPost",
-				data:JSON.stringify({
+				data:{
 					replyContent:replyContent,
 					boardNo: e
-				}),
-				contentType: 'application/json; charset=UTF-8',
+				},
 				success: function (result) {
 					$("#replyContent").val("");
 					if (result != null) {
