@@ -68,7 +68,7 @@ public class AttachmentService {
 		//war는 run시에 실제 리소스 파일인 file:// 프로토콜을 쓰지만 jar에서는 http://사용 
 		//Resource resource = resourceLoader.getResource(path);	
 		//File file = resource.getFile();
-		
+		log.debug("attNo "+attNo);
 		Attachment attachment = attachmentRepository.findByFileNo(attNo);
 		String path = System.getProperty("user.dir") + attachment.getFilePath()+attachment.getFilename();
 		
@@ -77,6 +77,7 @@ public class AttachmentService {
 		String encodeFileName = UriUtils.encode(attachment.getOriginFilename(), StandardCharsets.UTF_8);
 		
 		String contentDisposition = "attachment; filename=\"" + encodeFileName + "\"";
+		log.debug("attNo33ㄷㄷ "+attNo);
 		
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition)

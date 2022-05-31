@@ -142,9 +142,17 @@ public class BoardApiController {
 	}
 
 	@GetMapping("/download/{attNo}")
+<<<<<<< Updated upstream
 	public ResponseEntity<Resource> download(@PathVariable Long attNo) throws Exception {
 		ResponseEntity<Resource> downloadFile = attachmentService.download(attNo);
 		return downloadFile;
+=======
+	public ResponseEntity<Resource> download(HttpServletResponse response
+					   , HttpServletRequest request
+					   , @PathVariable Long attNo) throws Exception {
+		// ResponseEntity<Resource>
+		return attachmentService.download(attNo);
+>>>>>>> Stashed changes
 	}
 
 	@ResponseBody
