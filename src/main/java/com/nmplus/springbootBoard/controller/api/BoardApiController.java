@@ -3,6 +3,9 @@ package com.nmplus.springbootBoard.controller.api;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -142,17 +145,9 @@ public class BoardApiController {
 	}
 
 	@GetMapping("/download/{attNo}")
-<<<<<<< Updated upstream
 	public ResponseEntity<Resource> download(@PathVariable Long attNo) throws Exception {
 		ResponseEntity<Resource> downloadFile = attachmentService.download(attNo);
 		return downloadFile;
-=======
-	public ResponseEntity<Resource> download(HttpServletResponse response
-					   , HttpServletRequest request
-					   , @PathVariable Long attNo) throws Exception {
-		// ResponseEntity<Resource>
-		return attachmentService.download(attNo);
->>>>>>> Stashed changes
 	}
 
 	@ResponseBody
