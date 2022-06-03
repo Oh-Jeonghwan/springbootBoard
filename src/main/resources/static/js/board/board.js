@@ -11,9 +11,9 @@ let board = {
 			url: url, 
 			type: 'put', 
 			data: formData,
-			//contentType: "application/json; charset=utf-8", // body 데이터가 어떤
+			contentType: "application/json; charset=utf-8", // body 데이터가 어떤
 															// 타입인지(MIME)
-			//dataType: "json",
+			dataType: "json",
 			success: function (data) { 
 				if(data>0){
 					alert("글이 수정 되었습니다.");
